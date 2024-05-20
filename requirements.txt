@@ -23,11 +23,9 @@ Django==5.0.2
 django-address==0.2.8
 django-crispy-forms==2.1
 django-filter==23.5
-django-jazzmin==3.0.0
 django-light==0.1.0.post3
 django-multiselectfield==0.1.12
 django-phonenumber-field==7.3.0
-django-six==1.0.5
 django-smtp-ssl==1.0
 djangorestframework==3.14.0
 exceptiongroup==1.2.0
