@@ -41,7 +41,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from datetime import datetime
 from datetime import timedelta
-import openai
+# import openai
 import ast
 from address.models import Address
 from datetime import datetime, date, timedelta
@@ -1863,23 +1863,23 @@ def data_report(request):
 ############## DEV END #################
 
 #Not really in use tool to parse emails
-def parse_email_text(request):
-    if request.method == 'POST':
-        form = EmailTextForm(request.POST)
-        if form.is_valid():
-            email_text = form.cleaned_data['email_text']
+# def parse_email_text(request):
+#     if request.method == 'POST':
+#         form = EmailTextForm(request.POST)
+#         if form.is_valid():
+#             email_text = form.cleaned_data['email_text']
             
-            # Process the email_text using the OpenAI API
-            parsed_data = parse_email_with_gpt(email_text)
+#             # Process the email_text using the OpenAI API
+#             parsed_data = parse_email_with_gpt(email_text)
 
-            # Redirect to the QuoteCreateView with the parsed data
-            request.session['parsed_data'] = parsed_data
-            return HttpResponseRedirect(reverse('adminquote'))
+#             # Redirect to the QuoteCreateView with the parsed data
+#             request.session['parsed_data'] = parsed_data
+#             return HttpResponseRedirect(reverse('adminquote'))
 
-    else:
-        form = EmailTextForm()
+#     else:
+#         form = EmailTextForm()
 
-    return render(request, 'parse_email_text.html', {'form': form})
+#     return render(request, 'parse_email_text.html', {'form': form})
 
 
 #View to update a carrier
@@ -2157,29 +2157,29 @@ def generate_pdf(request, group_id):
     return response
 
 #not really in use view to parse emails
-def parse_email_with_gpt(email_text):
+# def parse_email_with_gpt(email_text):
 
-    prompt = f'Given the following email text: \n\n {email_text} \n\n, Extract the the following: Ship From Address, Ship To Address, pieces, weight, and dimensions. \n Format the Addresses in the following way: 1 Somewhere Ave, Northcote, VIC 3070, AU. \n Return everything in a python dictionary without any newlines, ready to be converted. /n Call the Ship From Address: pickup in the dictionary and the Ship To Address: dropoff.'
-
-
+#     prompt = f'Given the following email text: \n\n {email_text} \n\n, Extract the the following: Ship From Address, Ship To Address, pieces, weight, and dimensions. \n Format the Addresses in the following way: 1 Somewhere Ave, Northcote, VIC 3070, AU. \n Return everything in a python dictionary without any newlines, ready to be converted. /n Call the Ship From Address: pickup in the dictionary and the Ship To Address: dropoff.'
 
 
-    response = openai.Completion.create(
-        model="text-davinci-003",
-        prompt=prompt,
-        temperature=0.6,
-        max_tokens=1000,
-        )
 
 
-    response = response["choices"][0]["text"]
+#     response = openai.Completion.create(
+#         model="text-davinci-003",
+#         prompt=prompt,
+#         temperature=0.6,
+#         max_tokens=1000,
+#         )
 
-    response = response.strip()
 
-    # Convert the string representation to a Python dictionary
-    response_dict = ast.literal_eval(response)
+#     response = response["choices"][0]["text"]
 
-    return response_dict
+#     response = response.strip()
+
+#     # Convert the string representation to a Python dictionary
+#     response_dict = ast.literal_eval(response)
+
+#     return response_dict
 
 # Another plugin view to upload spreadsheets to upload orders for a specific trucking company
 class UDSOrderCreateView(FormView, LoginRequiredMixin):
