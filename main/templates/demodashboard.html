@@ -1,0 +1,969 @@
+{% extends 'base_dash.html' %}
+{% load static %}
+{% load form_tags %}
+{% load crispy_forms_tags %}
+
+{% block extraStyle  %}
+  <style>
+    .fixed.open {
+      display: flex;
+    }
+    .close{
+      display : none;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<div class="">
+
+    <!-- home content -->
+    {% if not orders%}
+    <div class="mx-auto bg-blue-200 rounded-xl shadow-md overflow-hidden w-full p-4 mt-3">
+        <div class="p-4">
+            <div class="font-bold text-xl mb-2">Instructions</div>
+            <p class="text-gray-700 text-base">
+                To search for all orders regardless of status - keep status as the default "-------".
+            </p>
+            <p class="text-gray-700 text-base mt-2">
+                To search for only one day - only use the start date.
+            </p>
+            <p class="text-gray-700 text-base mt-2">
+                All reports are saved in report history.
+            </p>
+            <p class="text-gray-700 text-base mt-2">
+                If you are going to reuse an order search save it is as a template to use over and over.
+            </p>
+        </div>
+    </div>
+    {% endif %}
+  
+  
+    <div class="mt-6">
+      <div id = "templateErrorContainer" class = "hidden my-3 text-center text-red-600 border border-red-700 rounded p-3 font-semibold w-fit m-auto"></div>
+      <div class="bg-neutral-50 flex items-center p-5 rounded-md">
+        <form method="GET" action="{% url 'dashboard' %}" class="w-full xl:w-11/12 3xl:w-5/6">
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div class="">
+              <h4 class="mb-2">
+                Status
+              </h4>
+              <div
+                class="p-2 min-h-[45px] w-full inline-flex text-start bg-white gap-4 border border-neutral-200 rounded-md"
+              >
+                <div class="rounded-full h-2 w-2 bg-green-500"></div>
+                {{ filter_form.deliverystatus|addattrs:"id=deliveryStatus"}}
+              </div>
+            </div>
+            <div class="filter-dates">
+              <h4 class="mb-2">Date From</h4>
+              <div
+                class="p-2 min-h-[45px] w-full flex items-center bg-white gap-4 border border-neutral-200 rounded-md"
+              >
+              {{ filter_form.start_date|addattrs:"class=w-full focus-within:border-none outline-none bg-transparent,id=startDate"}}
+              </div>
+            </div>
+            <div class="filter-dates">
+              <h4 class="mb-2">Date To</h4>
+              <div
+                class="p-2 min-h-[45px] w-full flex items-center bg-white gap-4 border border-neutral-200 rounded-md"
+              >
+              {{ filter_form.end_date|addattrs:"class=w-full focus-within:border-none outline-none bg-transparent,id=endDate"}}
+              </div>
+            </div>
+            <div class="">
+              <h4 class="mb-2">City</h4>
+              <div
+                class="p-2 min-h-[45px] flex items-center bg-white gap-4 border border-neutral-200 rounded-md"
+              >
+                <img
+                  src="{% static 'assets/searchlg-1.svg' %}"
+                  alt=""
+                  class="w-[20px] h-[20px] object-contain"
+                />
+                {{ filter_form.customercity|addattrs:"class=w-full focus-within:border-none outline-none w-48,id=customerCity"}}
+              </div>
+            </div>
+            <div class="">
+              <h4 class="mb-2">State</h4>
+              <div
+                class="p-2 min-h-[45px] flex items-center bg-white gap-4 border border-neutral-200 rounded-md"
+              >
+                <img
+                  src="{% static 'assets/searchlg-1.svg' %}"
+                  alt=""
+                  class="w-[20px] h-[20px] object-contain"
+                />
+                {{ filter_form.customerstate|addattrs:"class=w-full focus-within:border-none outline-none w-48,id=customerState"}}
+              </div>
+            </div>
+            <div class="">
+              <h4 class="mb-2">Customer Name</h4>
+              <div
+                class="p-2 min-h-[45px] flex items-center bg-white gap-4 border border-neutral-200 rounded-md"
+              >
+                <img
+                  src="{% static 'assets/searchlg-1.svg' %}"
+                  alt=""
+                  class="w-[20px] h-[20px] object-contain"
+                />
+                {{ filter_form.customername|addattrs:"class=w-full focus-within:border-none outline-none w-48,id=customername"}}
+              </div>
+            </div>
+            <div class="">
+              <h4 class="mb-2">Address</h4>
+              <div
+                class="p-2 min-h-[45px] flex items-center bg-white gap-4 border border-neutral-200 rounded-md"
+              >
+                <img
+                  src="{% static 'assets/searchlg-1.svg' %}"
+                  alt=""
+                  class="w-[20px] h-[20px] object-contain"
+                />
+                {{ filter_form.address|addattrs:"class=w-full focus-within:border-none outline-none w-48,id=address"}}
+              </div>
+            </div>
+          </div>
+          <!-- buttons -->
+          <div class="flex flex-wrap justify-between items-center gap-4 mt-4">
+            <div class = "flex gap-2">
+              <button
+                id = "searchBtn"
+                class="outline-none border-none bg-blue-600 px-4 py-2 rounded-md shadow-sm text-white font-semibold"
+                type="submit"
+              >
+              
+                Search
+              </button>
+              <div id = "clearFilterBtn"
+                class="flex cursor-pointer hover:bg-gray-50 border border-gray-300 px-4 py-2 rounded-md shadow-sm bg-white font-semibold"
+              >
+                Clear
+              </div>
+              
+            </div>
+            <div class = "flex gap-2">
+              <button
+                disabled
+                id="generate_report"
+                class="flex cursor-pointer opacity-50 border border-neutral-100 px-4 py-2 rounded-md shadow-sm bg-blue-600 text-white font-semibold"
+              >
+                Generate Report
+              </button>
+              <button
+                disabled
+                id = "saveTemplateBtn"
+                class="cursor-pointer opacity-50 hover:bg-gray-50 flex justify-center border border-gray-300 px-4 py-2 w-[11rem] min-h-[2.5rem] rounded-md shadow-sm text-black bg-white font-semibold"
+              >
+                <span id = "saveBtnText">Save as Template</span>
+                <span id = "spinner" class = "hidden">{% include 'spinner.html' %} </span>
+                <span id = "confirmTick" class = "hidden">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="35" height="23" viewBox="0 0 50 50">
+                    <polyline points="10,25 20,35 40,15" stroke="green" stroke-width="6" fill="none" />
+                </svg>
+              </span>
+              </button>
+            </div>
+          </div>
+        </form>
+        <div class="w-0 xl:w-auto"></div>
+      </div>
+    </div>
+    <!-- orders table -->
+  
+    <div class="w-full mt-6 overflow-x-scroll hide-scroll">
+      <table class="w-full border border-neutral-50 min-w-[1200px]">
+        <thead class="w-full bg-neutral-100">
+          <tr class="h-[50px] px-4 w-full">
+            <th class="">
+              <div class="flex items-center gap-2">
+                <label for="checkbox_thead" class="rounded-sm ml-3">
+                  <input
+                    type="checkbox"
+                    name="checkox_thead"
+                    id="checkbox_thead"
+                    class="checkox_head w-4 h-4 rounded-md"
+                  />
+                </label>
+                <div class="flex items-center">
+                  <h4 class="text-sm font-medium">Order ID</h4>
+                    <img
+                      id = "sort-by-id"
+                      src="{% static 'assets/arrowdown.svg' %}"
+                      alt=""
+                      class="cursor-pointer w-[1rem] h-[1rem] object-contain"
+                    />
+                </div>
+              </div>
+            </th>
+            <th class="">
+              <div class="flex items-center">
+                <h4 class="text-sm font-medium">Status</h4>
+                <img
+                  id = "sort-by-status"
+                  src="{% static 'assets/arrowdown.svg' %}"
+                  alt=""
+                  class="cursor-pointer w-[1rem] h-[1rem] object-contain"
+                />
+              </div>
+            </th>
+            
+            <th class="">
+              <div class="flex items-center">
+                <h4 class="text-sm font-medium">Status Code</h4>
+              </div>
+            </th>
+            <th class="">
+              <div class="flex items-center">
+                <h4 class="text-sm font-medium">Customer</h4>
+              </div>
+            </th>
+            <th class="">
+              <div class="flex items-center">
+                <h4 class="text-sm font-medium">Account</h4>
+              </div>
+            </th>
+            <th class="">
+              <div class="flex items-center">
+                <h4 class="text-sm font-medium">Date</h4>
+                <img
+                  id = "sort-by-date"
+                  src="{% static 'assets/arrowdown.svg' %}"
+                  alt=""
+                  class="cursor-pointer w-[1rem] h-[1rem] object-contain"
+                />
+              </div>
+            </th>
+            <th class="">
+              <div class="flex items-center">
+                <h4 class="text-sm font-medium">Confirmation image</h4>
+              </div>
+            </th>
+            <th class="">
+              <div class="flex items-center">
+                <h4 class="text-sm font-medium">Notes</h4>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white">
+          <!-- row 1 -->
+  
+          {% for order in orders %}
+  
+          <tr class="p-4 h-[72px] border-b border-neutral-100">
+            <td class="">
+              <div class="flex items-center gap-2">
+                <label for="checkbox_head" class="rounded-sm ml-3">
+                  <input
+                    type="checkbox"
+                    name="checkox_head"
+                    class="w-4 h-4 rounded-md"
+                  />
+                </label>
+                <div class="flex items-center">
+                  <h4 class="text-sm font-medium">
+                    <a class="underline cursor-pointer add-params" data-param-name="external_id" data-param-value="{{ order.externalid }}">
+                      {{order.externalid|default:"No ID"}}
+                    </a>
+                  </h4>
+                </div>
+              </div>
+            </td>
+            <td class="">
+              {% if order.deliverystatus.lower == 'delivered'%}
+              <div
+                class="flex items-center gap-2 rounded-xl border border-green-500 w-max p-1 px-2"
+              >
+                <div class="h-2 w-2 rounded-full bg-green-500"></div>
+                <div class="flex items-center">
+                  <h4 class="text-xs font-medium">Delivered</h4>
+                </div>
+              </div>
+              {% elif order.deliverystatus.lower == 'confirmed'%}
+              <div
+                class="flex items-center gap-2 rounded-xl border border-[#7A5AF8] w-max p-1 px-2"
+              >
+                <div class="h-2 w-2 rounded-full bg-[#7A5AF8]"></div>
+                <div class="flex items-center">
+                  <h4 class="text-xs font-medium text-[#7A5AF8]">Confirmed</h4>
+                </div>
+              </div>
+  
+              {% elif order.deliverystatus.lower == "pickedup" %}
+  
+              <div
+                class="flex items-center gap-2 rounded-xl border border-blue-700 w-max p-1 px-2"
+              >
+                <div class="h-2 w-2 rounded-full bg-blue-700"></div>
+                <div class="flex items-center">
+                  <h4 class="text-xs font-medium text-blue-700">Picked Up</h4>
+                </div>
+              </div>
+              {% elif order.deliverystatus.lower == 'statuscodeadded'%}
+  
+              <div
+                class="flex items-center gap-2 rounded-xl border border-red-500 w-max p-1 px-2"
+              >
+                <div class="h-2 w-2 rounded-full bg-red-500"></div>
+                <div class="flex items-center">
+                  <h4 class="text-xs font-medium text-red-500">StatusCodeAdded</h4>
+                </div>
+              </div>
+              {% elif order.deliverystatus.lower == 'placed'%}
+              <div
+                class="flex items-center gap-2 rounded-xl border border-yellow-500 w-max p-1 px-2"
+              >
+                <div class="h-2 w-2 rounded-full bg-yellow-500"></div>
+                <div class="flex items-center">
+                  <h4 class="text-xs font-medium text-yellow-500">
+                    Placed
+                  </h4>
+                </div>
+              </div>
+              {% elif order.deliverystatus.lower == 'attempted' %}
+              <div
+                class="flex items-center gap-2 rounded-xl border border-red-500 w-max p-1 px-2"
+              >
+                <div class="h-2 w-2 rounded-full bg-red-500"></div>
+                <div class="flex items-center">
+                  <h4 class="text-xs font-medium text-red-500">Attempted Delivery</h4>
+                </div>
+              </div>
+  
+              {% endif %}
+            </td>
+            <td class="">
+              <div class="">
+                <p class="">
+                  {% if order.statuscode %}{{order.statuscode}}{% else %}No Code{% endif %}
+                </p>
+              </div>
+            </td>
+            <td class="">
+              <div class="">
+                <p class="">
+                  {{order.customername}} <br />
+                  {{ order.customeraddress }}          
+                </p>
+              </div>
+            </td>
+            <td class="">
+              <div class="">
+                <p class="">
+                  {{order.user.company_name  }} <br />
+                  {{order.user.company_address|default:""  }}
+                </p>
+              </div>
+            </td>
+            <td class="">
+              <div class="">
+                {% if order.deliverstatus.lower == 'confirmed' %}
+                  <p class="">{{ order.placed|default:"No Date" }}</p>
+                {% elif order.deliverystatus.lower == 'pickedup' %}
+                  <p class="">{{ order.departed|default:"No Date" }}</p>
+                {% else %}
+                  <p class="">{{ order.delivery|default:"No Date" }}</p>
+                {% endif %}
+              </div>
+            </td>
+            <td class="">
+              <div class="">
+                <button onclick="copyToClipboard('https://portal.357company.com/confirmation_image/{{ order.id }}/')" class="">Copy Image Link</button>
+              </div>
+            </td>
+            
+            <script>
+            function copyToClipboard(text) {
+              var textarea = document.createElement("textarea");
+              textarea.textContent = text;
+              textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in MS Edge.
+              document.body.appendChild(textarea);
+              textarea.select();
+              try {
+                return document.execCommand("copy");  // Security exception may be thrown by some browsers.
+              } catch (ex) {
+                console.warn("Copy to clipboard failed.", ex);
+                return false;
+              } finally {
+                document.body.removeChild(textarea);
+              }
+            }
+            </script>
+            <td class="">
+              <div class="">
+                  <p class="">{{ order.podcomments|default:""|truncatechars:20 }} {{ order.podname|default:""|truncatechars:10 }} 
+                  </p>
+              </div>
+          </td>
+          </tr>
+  
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- pagination -->
+    <div class="w-full my-8 flex items-center justify-between border-t border-neutral-100 pt-2 bg-white">
+      {% if orders.has_previous %}
+      <a  href="?page={{ orders.previous_page_number }}" class="paginationBtn flex items-center gap-2 p-2 outline-none border-none shadow-sm text-sm font-medium">
+          <img src="{% static 'assets/arrowleft.svg' %}" alt="" class="w-auto h-4 object-contain" />
+          <span class="text-sm">Previous</span>
+      </a>
+      {% else %}
+      <span class="flex items-center gap-2 p-2 outline-none border-none shadow-sm text-sm font-medium text-neutral-300">
+          <img src="{% static 'assets/arrowleft.svg' %}" alt="" class="w-auto h-4 object-contain" />
+          <span class="text-sm">Previous</span>
+      </span>
+      {% endif %}
+  
+      <div class="flex items-center gap-2">
+          {% for num in orders.paginator.page_range %}
+              {% if orders.number == num %}
+                  <span class="outline-none border-none h-4 w-4 text-xs md:h-6 md:w-6 bg-neutral-200 rounded-md p-2 flex items-center justify-center">{{ num }}</span>
+              {% elif num >= orders.number|add:'-3' and num <= orders.number|add:'3' %}
+                  <a href="?page={{ num }}" class="paginationBtn outline-none border-none h-4 w-4 text-xs md:h-6 md:w-6 rounded-md p-2 flex items-center justify-center">{{ num }}</a>
+              {% endif %}
+          {% endfor %}
+      </div>
+  
+      {% if orders.has_next %}
+      <a href="?page={{ orders.next_page_number }}" class="paginationBtn flex items-center gap-2 p-2 outline-none border-none shadow-sm text-sm font-medium">
+          <span class="text-sm">Next</span>
+          <img src="{% static 'assets/arrowright.svg' %}" alt="" class="w-auto h-4 object-contain" />
+      </a>
+      {% else %}
+      <span class="flex items-center gap-2 p-2 outline-none border-none shadow-sm text-sm font-medium text-neutral-300">
+          <span class="text-sm">Next</span>
+          <img src="{% static 'assets/arrowright.svg' %}" alt="" class="w-auto h-4 object-contain" />
+      </span>
+      {% endif %}
+  </div>
+  
+    <!-- modal -->
+    <div id="modal-generate" class="fixed top-0 hidden left-0 w-screen h-screen bg-opacity-60 bg-[#1E1E1E] flex items-center justify-center">
+      <form id = "generateReportForm" class="w-[98%] lg:w-[30%]  mx-auto z-10 bg-white p-4 rounded-md">
+        {% csrf_token %}
+        <div class="flex items-center justify-between">
+          <div class = "flex items-center gap-4">
+            <img src="{% static 'assets/featured-icon.svg' %}" alt="" class="" />
+            <h3 class="font-semibold my-2">Generate Report</h3>
+          </div>
+          
+          <div onclick="closeModal()" class="">
+            <img src="{% static 'assets/xclose.svg' %}" alt="" class="cursor-pointer" />
+          </div>
+        </div>
+        <div class=" flex items-end">
+          <div class="w-full mt-5">
+            <h4 class="mb-2 text-neutral-700">Report Format*</h4>
+
+            <div
+              class="p-2 min-h-[45px] w-full flex items-center bg-white gap-4 border border-neutral-200 rounded-md"
+            >
+              <select
+                class="w-full focus-within:border-none outline-none bg-transparent"
+                id="select-report"
+              >
+                <option value="" disabled>Select</option>
+                <option value="csv" selected>CSV</option>
+                <option value="excel">Excel</option>
+              </select>
+            </div>
+          </div>
+          {% comment %} <div class="w-full mt-5">
+            <h4 class="mb-2 text-neutral-700">Email(s)*</h4>
+
+            <div
+              class="p-2 min-h-[45px] w-full flex items-center bg-white gap-4 border border-neutral-200 rounded-md"
+            >
+              <div class="w-full flex items-center flex-wrap gap-2">
+                <div id="emailList" class="flex items-center flex-wrap gap-2">
+                  <!-- temporary hidden -->
+                </div>
+                <input
+                  type="email"
+                  id="emailbox"
+                  placeholder="Email Address"
+                  class="w-full focus-within:border-none outline-none bg-transparent"
+                />
+              </div>
+            </div>
+            <small class="text-sm text-neutral-400"
+              >Press comma(',') after typing each email address</small
+            >
+          </div>
+          <div class="w-full mt-5">
+
+            <div
+              class="p-2 min-h-[45px] w-full flex items-center bg-white gap-4 border border-neutral-200 rounded-md"
+            >
+              <input
+                id="subject"
+                type="text"
+                placeholder="Subject"
+                class="w-full focus-within:border-none outline-none bg-transparent"
+                required
+              />
+            </div>
+          </div>
+          <div class="w-full mt-5">
+
+            <div
+              class="p-2 min-h-[105px] w-full flex items-center bg-white gap-4 border border-neutral-200 rounded-md"
+            >
+              <textarea
+                id="description"
+                placeholder="description"
+                class="w-full focus-within:border-none outline-none bg-transparent"
+                required
+              ></textarea>
+            </div>
+          </div>
+          <div class="my-4">
+            <label for="addAutomation" class="rounded-sm">
+              <div class="flex items-center gap-2 mt-4">
+                <input
+                  type="checkbox"
+                  id="addAutomation"
+                  class="w-4 h-4 rounded-md"
+                />
+                <div class="flex items-center">
+                  <h4 class="text-sm font-medium">Add Automation</h4>
+                </div>
+              </div>
+            </label>
+          </div>
+          <div
+            id="calendars"
+            class="flex items-center hidden gap-2 border border-neutral-200 w-max rounded-md mb-4"
+          >
+            {% for time in calender %} 
+              {% if time == 'Monthly' %}
+                <label for="checkbox_{{time}}" class="w-max">
+                  <div class="flex items-center gap-2 p-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      id="checkbox_{{time}}"
+                      name="schedule"
+                      value = "{{time}}"
+                      class="w-4 h-4 rounded-full"
+                    />
+                    <div class="flex items-center">
+                      <h4 class="text-sm font-medium">{{time}}</h4>
+                    </div>
+                  </div>
+                </label>
+              {% else %}
+                <label for="checkbox_{{time}}" class="w-max">
+                  <div
+                    class="flex items-center gap-2 p-2 border-r border-neutral-200 cursor-pointer"
+                  >
+                    <input
+                      type="radio"
+                      id="checkbox_{{time}}"
+                      name="calendar"
+                      value = "{{time}}"
+                      class="w-4 h-4 rounded-full"
+                    />
+                    <div class="flex items-center">
+                      <h4 class="text-sm font-medium">{{time}}</h4>
+                    </div>
+                  </div>
+                </label>
+              {% endif %} 
+            {% endfor %}
+          </div> {% endcomment %}
+          <div class="w-full flex justify-end">
+            <button
+              id="generate_report_btn"
+              class="outline-none flex w-fit justify-center h-[2.5rem] border disabled:bg-blue-300 disabled:cursor-not-allowed border-neutral-100 px-4 py-2 rounded-md shadow-sm bg-blue-600 text-white"
+            >
+              <span id = "generate_report_btn_text"> Generate Report </span>
+              <span class = "hidden" id = "generate_report_spinner">{% include 'spinner.html' %}<span />
+            </button>
+          </div>
+        </div>
+      </form>
+      <!-- preview -->
+      <div class = "hidden lg:block h-[80%] overflow-hidden w-[60%] rounded-md border-2 border-gray-300 mr-7">
+        <div class = "p-3 rounded bg-blue-500 text-white text-center font-semibold relative">
+          <span>Preview</span>
+          <div onclick="closeModal()" class="absolute right-4 top-0 h-full flex items-center">
+            <img src="{% static 'assets/xclosewhite.svg' %}" alt="" class="cursor-pointer" />
+          </div>
+        </div>
+        <div class = " h-full w-full overflow-auto bg-white">
+          <table class="w-full border border-neutral-50 min-w-[1200px]">
+            <thead class="w-full bg-neutral-100">
+              <tr class="h-[50px] px-4 w-full">
+                <th class="">
+                    <div class="flex items-center justify-center">
+                      <h4 class="text-sm font-medium">Order ID</h4>
+                    </div>
+                </th>
+                <th class="">
+                  <div class="flex items-center">
+                    <h4 class="text-sm font-medium">Status</h4>
+                  </div>
+                </th>
+                
+                <th class="">
+                  <div class="flex items-center">
+                    <h4 class="text-sm font-medium">Status Code</h4>
+                  </div>
+                </th>
+                <th class="">
+                  <div class="flex items-center">
+                    <h4 class="text-sm font-medium">Shippers</h4>
+                  </div>
+                </th>
+                <th class="">
+                  <div class="flex items-center">
+                    <h4 class="text-sm font-medium">Consignee</h4>
+                  </div>
+                </th>
+                <th class="">
+                  <div class="flex items-center">
+                    <h4 class="text-sm font-medium">Delivery Date</h4>
+                  </div>
+                </th>
+                <th class="">
+                  <div class="flex items-center">
+                    <h4 class="text-sm font-medium">Confirmation image</h4>
+                  </div>
+                </th>
+                <th class="">
+                  <div class="flex items-center">
+                    <h4 class="text-sm font-medium">Notes</h4>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white">
+              <!-- row 1 -->
+      
+              {% for order in orders %}
+      
+              <tr class="p-4 h-[72px] border-b border-neutral-100">
+                <td class="">
+                  <h4 class="text-sm font-medium flex items-center justify-center">
+                      {{order.externalid|default:"No ID"}}
+                  </h4>
+                </td>
+                <td class="">
+                  {% if order.deliverystatus.lower == 'delivered'%}
+                  <div
+                    class="flex items-center gap-2 rounded-xl border border-green-500 w-max p-1 px-2"
+                  >
+                    <div class="h-2 w-2 rounded-full bg-green-500"></div>
+                    <div class="flex items-center">
+                      <h4 class="text-xs font-medium">Delivered</h4>
+                    </div>
+                  </div>
+                  {% elif order.deliverystatus.lower == 'confirmed'%}
+                  <div
+                    class="flex items-center gap-2 rounded-xl border border-[#7A5AF8] w-max p-1 px-2"
+                  >
+                    <div class="h-2 w-2 rounded-full bg-[#7A5AF8]"></div>
+                    <div class="flex items-center">
+                      <h4 class="text-xs font-medium text-[#7A5AF8]">Confirmed</h4>
+                    </div>
+                  </div>
+      
+                  {% elif order.deliverystatus.lower == "pickedup" %}
+      
+                  <div
+                    class="flex items-center gap-2 rounded-xl border border-blue-700 w-max p-1 px-2"
+                  >
+                    <div class="h-2 w-2 rounded-full bg-blue-700"></div>
+                    <div class="flex items-center">
+                      <h4 class="text-xs font-medium text-blue-700">Picked Up</h4>
+                    </div>
+                  </div>
+                  {% elif order.deliverystatus.lower == 'statuscodeadded'%}
+      
+                  <div
+                    class="flex items-center gap-2 rounded-xl border border-red-500 w-max p-1 px-2"
+                  >
+                    <div class="h-2 w-2 rounded-full bg-red-500"></div>
+                    <div class="flex items-center">
+                      <h4 class="text-xs font-medium text-red-500">StatusCodeAdded</h4>
+                    </div>
+                  </div>
+                  {% elif order.deliverystatus.lower == 'placed'%}
+                  <div
+                    class="flex items-center gap-2 rounded-xl border border-yellow-500 w-max p-1 px-2"
+                  >
+                    <div class="h-2 w-2 rounded-full bg-yellow-500"></div>
+                    <div class="flex items-center">
+                      <h4 class="text-xs font-medium text-yellow-500">
+                        Placed
+                      </h4>
+                    </div>
+                  </div>
+                  {% elif order.deliverystatus.lower == 'attempted' %}
+                  <div
+                    class="flex items-center gap-2 rounded-xl border border-red-500 w-max p-1 px-2"
+                  >
+                    <div class="h-2 w-2 rounded-full bg-red-500"></div>
+                    <div class="flex items-center">
+                      <h4 class="text-xs font-medium text-red-500">Attempted Delivery</h4>
+                    </div>
+                  </div>
+      
+                  {% endif %}
+                </td>
+                <td class="">
+                  <div class="">
+                    <p class="">
+                      {% if order.statuscode %}{{order.statuscode}}{% else %}No Code{% endif %}
+                    </p>
+                  </div>
+                </td>
+                <td class="">
+                  <div class="">
+                    <p class="">
+                      {{order.customername}} <br />
+                      {{ order.customeraddress }}          
+                    </p>
+                  </div>
+                </td>
+                <td class="">
+                  <div class="">
+                    <p class="">
+                      {{order.user.company_name  }} <br />
+                      {{order.user.company_address|default:""  }}
+                    </p>
+                  </div>
+                </td>
+                <td class="">
+                  <div class="">
+                    <p class="">{{ order.delivery|default:"No Date" }}</p>
+                  </div>
+                </td>
+                <td class="">
+                  <div class="">
+                    <p class="">{% if order.imageid %} {{ order.imageid }} {% else%} No Image {% endif %}</p>
+                  </div>
+                </td>
+                <td class="">
+                  <div class="">
+                    <p class="">{{order.podname|default:""}} {{ order.podcomments|default:"" }}</p>
+                  </div>
+                </td>
+              </tr>
+      
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- orderDetails side-modal -->
+  
+    {% if orderDetail %}
+  
+    <div
+      id="sidebar-modal"
+      class="fixed top-0 right-0 w-screen h-screen bg-opacity-60 bg-[#1E1E1E] flex items-center justify-end"
+    >
+      <div
+        class="bg-white h-screen w-full lg:w-[60%] z-10 shadow-sm p-4 overflow-y-scroll overflow-x-hidden hide-scroll"
+      >
+        <div
+          class="flex items-center justify-between border-b border-neutral-100 pb-2"
+        >
+          <h3 class="text-xl font-semibold">Orders details</h3>
+          <div class="block relative cursor-pointer" id = "closeDetailBtn">
+            <img src="{% static 'assets/xclose.svg' %}" alt="" class="" />
+          </div>
+        </div>
+        <div
+          class="bg-[#ECFDF3] bg-opacity-40 w-[95%] grid grid-cols-3 mt-5 p-4 gap-4 mx-auto"
+        >
+          <div class="text-center">
+            <h3 class="text-base md:text-lg font-semibold">Ordered</h3>
+            <p class="text-xs sm:text-sm md:text-base text-neutral-500">
+              {{orderDetail.order_webhook.first.OrderDate|date:"F d, Y H:i"}}
+            </p>
+          </div>
+          <div class="text-center">
+            <h3 class="text-base md:text-lg font-semibold">Picked Up</h3>
+            <p class="text-xs sm:text-sm md:text-base text-neutral-500">
+              {{orderDetail.order_webhook.first.PickedUp|date:"F d, Y H:i"}}
+            </p>
+          </div>
+          <div class="text-center">
+            {% if orderDetail.deliverystatus != 'attempted'%}
+            <h3 class="text-base md:text-lg font-semibold">Delivered</h3>
+            <p class="text-xs sm:text-sm md:text-base text-neutral-500">
+              {{orderDetail.delivery|date:"F d, Y H:i"}}
+            </p>
+            {% else %}
+            <h3 class="text-base md:text-lg font-semibold">Attempted Delivery</h3>
+            <p class="text-xs sm:text-sm md:text-base text-neutral-500">
+              {{orderDetail.delivery|date:"F d, Y H:i"}}
+            </p>
+            {% endif %}
+          </div>
+        </div>
+        <div
+          class="grid grid-cols-3 mt-5 p-4 gap-4 border-b border-neutral-100 pb-2"
+        >
+          <div class="">
+            <h3 class="text-sm text-neutral-700 pb-1">Order ID</h3>
+            <a href = "{% url "order_detail" %}?external_id={{orderDetail.externalid}}" class="hover:underline text-sm text-neutral-500">{{orderDetail.externalid|default:""}}</a>
+          </div>
+          <div class="">
+            <h3 class="text-sm text-neutral-700 pb-1">Delivery Status</h3>
+            <div
+              class="flex items-center gap-2 w-full w-max p-1 px-2"
+            >
+              <div class=""></div>
+              <div class="">
+                <h4 class="text-sm text-neutral-500">{{orderDetail.deliverystatus|default:""}}</h4>
+              </div>
+            </div>
+          </div>
+          <div class="">
+            <h3 class="text-sm text-neutral-700 pb-1">Delivered Date</h3>
+            <p class="text-sm text-neutral-500">{{orderDetail.delivery|default:""}}</p>
+          </div>
+        </div>
+        <div
+          class="grid grid-cols-3 mt-5 p-4 gap-4 border-b border-neutral-100 pb-2"
+        >
+          <div class="">
+            <h3 class="text-sm text-neutral-700 pb-1">Status Code</h3>
+            {{orderDetail.statuscode|default:""}}
+          </div>
+          <div class="">
+            <h3 class="text-sm text-neutral-700 pb-1">Account</h3>
+            <p class="text-sm text-neutral-700 font-semibold">{{orderDetail.user.company_name|default:""}}</p>
+            <p class="text-sm text-neutral-500">{{orderDetail.user.company_address|default:""}}</p>
+          </div>
+          <div class="">
+            <h3 class="text-sm text-neutral-700 pb-1">Piece and Weight</h3>
+            <p class="text-sm text-neutral-500">{{orderDetail.order_webhook.first.Pieces|default:""}} @ {{orderDetail.order_webhook.first.Weight|default:""}} lbs</p>
+          </div>
+        </div>
+        <div
+          class="grid grid-cols-3 mt-5 p-4 gap-4 border-b border-neutral-100 pb-2"
+        >
+          <div class="">
+            <h3 class="text-sm text-neutral-700 pb-1">Customer Name</h3>
+            <p class="text-sm text-neutral-700 font-semibold">{{orderDetail.customername|default:""}}</p>
+          </div>
+          <div class="">
+            <h3 class="text-sm text-neutral-700 pb-1">Customer Phone</h3>
+            <p class="text-sm text-neutral-700 font-semibold">{{orderDetail.customerphone|default:""}}</p>
+          </div>
+  
+          <div class="">
+            <h3 class="text-sm text-neutral-700 pb-1">Customer Address</h3>
+            <p class="text-sm text-neutral-700 font-semibold">
+              {{orderDetail.customeraddress|default:""}}
+            </p>
+          </div>
+        </div>
+        <div
+          class="grid grid-cols-3 mt-5 p-4 gap-4 border-b border-neutral-100 pb-2"
+        >
+          <div class="">
+            <h3 class="text-sm text-neutral-700 pb-1">Customer City</h3>
+            <p class="text-sm text-neutral-500">{{orderDetail.customercity|default:""}}</p>
+          </div>
+          <div class="">
+            <h3 class="text-sm text-neutral-700 pb-1">Customer State</h3>
+            <p class="text-sm text-neutral-500">{{orderDetail.customerstate|default:""}}</p>
+          </div>
+  
+          <div class="">
+            <h3 class="text-sm text-neutral-700 pb-1">Customer ZIP</h3>
+            <p class="text-sm text-neutral-500">{{orderDetail.customerzip|default:""}}</p>
+          </div>
+        </div>
+        <div
+          class="grid grid-cols-[70%30%] mt-5 p-4 gap-4 border-b border-neutral-100 py-3"
+        >
+          <div class="">
+            <h3 class="text-sm text-neutral-700 pb-2">Comment</h3>
+  
+            <p class="text-sm text-neutral-500">
+              {{orderDetail.podcomments|default:""}}
+            </p>
+          </div>
+          <div class=""></div>
+        </div>
+        <div
+          class="grid grid-cols-2 mt-5 p-4 gap-4 border-b border-neutral-100 py-3"
+        >
+          <div class="">
+            <h3 class="text-sm text-neutral-700 pb-2">Proof of Delivery</h3>
+  
+            <p class="text-sm text-neutral-500">{{orderDetail.podname|default:""}}</p>
+          </div>
+          <div class="">
+            <h3 class="text-sm text-neutral-700 pb-2">Signature</h3>
+            <div class="flex items-center gap-2">
+              {{orderDetail.signature|default:""}}
+              <img
+                src="{% static 'assets/download-02.svg' %}"
+                alt=""
+                class="cursor-pointer"
+              />
+            </div>
+          </div>
+        </div>
+
+        {% if orderDetail.imageid %}
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-[30%70%] items-start mt-5 p-4 gap-4 border-b border-neutral-100 py-3"
+        >
+          <div class="h-[440px] w-full rounded-md relative">
+            <img
+              src="{% url 'confirmation_image' orderDetail.id %}"
+              alt="{{orderDetail.podname}}-image"
+              class="w-full h-full object-cover rounded-md"
+            />
+            <a
+              href="{% url 'confirmation_image' orderDetail.id %}"
+              download
+              class="absolute bottom-3 right-6 rounded-md p-1 bg-blue-600 w-[24px] h-[24px] cursor-pointer"
+            >
+              <img
+                src="{% static 'assets/download-white.svg' %}"
+                alt=""
+                class="w-full h-full object-contain"
+              />
+            </a>
+          </div>
+
+          {% endif %}
+
+          {% if latitude and longitude %}
+          <div class="h-[440px] w-full relative rounded-md">
+            <iframe
+              src="https://www.google.com/maps/embed/v1/place?key={{ key }}&q={{ latitude }},{{ longitude }}&zoom=14"
+              width="100%"
+              height="100%"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+{% endblock %}
+{% block extrascript %}
+<script>
+  const imageBtnUrl = "{% static 'assets/xclose.svg' %}";
+  </script>
+<script src = {% static "js/dashboard.js"%}></script>
+{% endblock %}

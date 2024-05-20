@@ -1,0 +1,200 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<style>
+    .tooltip {
+        visibility: hidden;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 5px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 100%; /* Position the tooltip above the text */
+        left: 50%;
+        margin-left: -60px; /* Half of the tooltip's width to center it */
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+    
+    .tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%; /* Position arrow at the bottom of tooltip */
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: black transparent transparent transparent;
+    }
+    
+    .hoverable:hover .tooltip {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .active {
+        border: 5px solid #bdbdbd;  /* You can adjust the color and border width */
+        box-sizing: border-box;
+    }
+
+
+
+    
+    
+</style>
+
+
+
+
+<div class="flex justify-center mt-10 items-center ">
+  <form method="get" action="" class="text-center">
+      <input type="text" name="search" placeholder="Search by Carrier Name" value="{{ request.GET.search }}" class="border p-2 rounded">
+      <button type="submit" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 focus:outline-none focus:bg-gray-700">
+          Search
+      </button>
+  </form>
+</div>
+
+
+<div class="max-w-xl mx-auto mt-5 m-10 p-5 border rounded-xl grid grid-cols-2 gap-4">
+
+    <a href="?filter=unsigned_carriers" class="w-full text-center">
+        <button class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600  w-52 focus:outline-none focus:bg-red-700">
+            Unsigned Carriers {{ counts.0 }}
+        </button>
+    </a>
+
+    <a href="?filter=unsigned_couriers" class="w-full text-center">
+        <button class="px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 w-52  focus:outline-none focus:bg-indigo-700">
+            Unsigned Couriers  {{ counts.3 }}
+        </button>
+    </a>
+
+
+
+    <a href="?filter=signed_carriers" class="w-full text-center">
+        <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 w-52  focus:outline-none focus:bg-green-700">
+            Pending Carriers  {{ counts.1 }}
+        </button>
+    </a>
+
+    <a href="?filter=signed_couriers" class="w-full text-center">
+        <button class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 w-52  focus:outline-none focus:bg-purple-700">
+            Pending Couriers  {{ counts.4 }}
+        </button>
+    </a>
+
+    <a href="?filter=onboarded_carriers" class="w-full text-center">
+        <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-52 focus:outline-none focus:bg-blue-700">
+            Onboarded Carriers  {{ counts.2 }}
+        </button>
+    </a>
+
+    <a href="?filter=onboarded_couriers" class="w-full text-center">
+        <button class="px-4 py-2 bg-pink-400 text-white rounded hover:bg-pink-600 w-52  focus:outline-none focus:bg-yellow-700">
+            Onboarded Couriers {{ counts.5 }}
+        </button>
+    </a>
+
+
+
+  <!-- Button 1 -->
+
+  
+  <!-- Button 2 -->
+
+    <!-- Button 5 -->
+
+
+
+  <!-- Button 3 -->
+
+
+
+
+  <!-- Button 4 -->
+
+
+
+
+
+
+  <!-- Button 6 -->
+
+</div>
+
+
+
+  <h1 class="text-3xl font-bold mb-8 px-20">Carriers</h1>
+  <div class="border-b-2 border-gray-300 mb-8 pb-4 px-20">
+    <table class="table-auto w-full">
+      <thead>
+          <tr>
+              <th class="px-4 py-2 font-bold bg-gray-200">Company</th>
+              <th class="px-4 py-2 font-bold bg-gray-200">Email</th>
+              <th class="px-4 py-2 font-bold bg-gray-200">Phone</th>
+              <th class="px-4 py-2 font-bold bg-gray-200">Contact</th>
+              <th class="px-4 py-2 font-bold bg-gray-200">City</th>
+              <th class="px-4 py-2 font-bold bg-gray-200">State</th>
+              <th class="px-4 py-2 font-bold bg-gray-200">MC Number</th>
+              <th class="px-4 py-2 font-bold bg-gray-200">USDOT Number</th>
+              <th class="px-4 py-2 font-bold bg-gray-200">Status</th>
+              <th class="px-4 py-2 font-bold bg-gray-200">Follow Up</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for carrier in carriers %}
+        {% if forloop.counter|divisibleby:2 %}
+        <tr class="bg-gray-100 hover:bg-gray-300 transition-all duration-150">
+        {% else %}
+        <tr class="bg-white hover:bg-gray-300 transition-all duration-150">
+        {% endif %}
+            <td class="px-4 py-2 underline text-blue-500">
+                <div class="hoverable" style="position: relative; display: inline-block;">
+                    <a href="{% url 'carrier-detail' pk=carrier.pk %}">{{ carrier.company }}</a>
+                    <span class="tooltip">Missing fields: {{ carrier.missing_fields }}</span>
+                </div>                
+            </td>
+            <td class="px-4 py-2">{{ carrier.email }}</td>
+            <td class="px-4 py-2">{{ carrier.mobilephone }}</td>
+            <td class="px-4 py-2">{{ carrier.contact }}</td>
+            <td class="px-4 py-2">{{ carrier.address.locality.name }}</td>
+            <td class="px-4 py-2">{{ carrier.address.locality.state.name }}</td>
+            <td class="px-4 py-2">{{ carrier.mcnumber }}</td>
+            <td class="px-4 py-2">{{ carrier.usdotnumber }}</td>
+            <td class="px-4 py-2">{{ carrier.status }}</td>
+            <td class="px-4 py-2"><a href="{% url 'carrier_followup' carrier.pk%}" class="text-blue-500 underline">Follow Up</a></td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td class="px-4 py-2" colspan="8">None found.</td>
+        </tr>
+    {% endfor %}
+      </tbody>
+  </table>
+
+
+  <script>
+
+    const currentFilter = new URLSearchParams(window.location.search).get('filter');
+    if (currentFilter) {
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(button => {
+            const href = button.parentElement.getAttribute('href');
+            if (href && href.includes(currentFilter)) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
+        });
+    }
+    
+</script>
+  
+
+  {% endblock %}

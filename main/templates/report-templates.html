@@ -1,0 +1,65 @@
+{% extends "base_dash.html" %} {% block content %}
+
+<div class="w-full">
+  <!-- Report Template -->
+  
+
+  <!-- report templates -->
+  {% if templates %}
+  <h2 class="text-xl font-semibold my-4">Report Templates</h2>
+  <div class="mt-5">
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 font-inter"
+    >
+      {% for template in templates %}
+      <div
+        class="w-full border border-neutral-100 shadow-sm rounded-md p-4 flex flex-col gap-4 bg-white"
+      >
+        <div class="">
+          <h3 class="text-neutral-500 font-medium text-sm mb-2">
+            Delivery date
+          </h3>
+          <p class="text-sm">{{template.start_date|date:"F d, Y"}} - {{template.end_date|date:"F d, Y"}}</p>
+        </div>
+
+        <div class="flex items-center gap-14">
+          <div class="">
+            <h3 class="text-sm text-neutral-500 mb-2">Status</h3>
+            <div
+              class="flex items-center gap-2 rounded-xl border border-green-500 w-full h-full w-max p-1 px-2 bg-[#ABEFC6] bg-opacity-30"
+            >
+              <div class="h-2 w-2 rounded-full bg-green-500"></div>
+              <div class="flex items-center">
+                <h4 class="text-xs font-medium text-green-700">
+                  {{template.deliverystatus|default:"---"}}
+                </h4>
+              </div>
+            </div>
+          </div>
+          <div class="">
+            <h3 class="text-neutral-500 text-sm mb-2">State and City</h3>
+            <h4 class="text-sm font-semibold">{{template.customercity|default:"---"}}, {{template.customerstate|default:"---"}}</h4>
+          </div>
+        </div>
+        <div class="-w-full">
+          <a
+            href = "{% url 'dashboard' %}?template_id={{template.id}}"
+            class="outline-none border border-neutral-100 w-full text-sm flex items-center justify-center px-4 py-2 rounded-md shadow-sm bg-blue-600 text-white font-semibold capitalized"
+          >
+            Use template
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% else %}
+  <div class="flex items-center justify-center h-96">
+    <h2 class="text-lg text-neutral-500 font-medium">
+      Save templates to use them here
+    </h2>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock content %}

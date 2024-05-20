@@ -1,0 +1,844 @@
+
+
+
+
+{% extends 'base.html' %}
+
+
+
+
+
+
+
+{% block content %}
+
+{% load tailwind_filters %}
+
+
+
+<head>
+    {{ form.media }} <!-- needed for JS/GoogleMaps lookup -->
+    </head>
+
+<!-- This is an example component -->
+<div class="h-full bg-fray-200" style="background-image:linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url(https://i.imgur.com/DSmm4mY.png); background-size: contain;">
+ 
+	<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
+
+	<style>
+		[x-cloak] {
+			display: none;
+		}
+
+		[type="checkbox"] {
+			box-sizing: border-box;
+			padding: 0;
+		}
+
+		.form-checkbox,
+		.form-radio {
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			-webkit-print-color-adjust: exact;
+			color-adjust: exact;
+			display: inline-block;
+			vertical-align: middle;
+			background-origin: border-box;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			flex-shrink: 0;
+			color: currentColor;
+			background-color: #fff;
+			border-color: #e2e8f0;
+			border-width: 1px;
+			height: 1.4em;
+			width: 1.4em;
+		}
+
+		.form-checkbox {
+			border-radius: 0.25rem;
+		}
+
+		.form-radio {
+			border-radius: 50%;
+		}
+
+		.form-checkbox:checked {
+			background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+			border-color: transparent;
+			background-color: currentColor;
+			background-size: 100% 100%;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+		
+		.form-radio:checked {
+			background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+			border-color: transparent;
+			background-color: currentColor;
+			background-size: 100% 100%;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+	</style>
+
+    {% if messages %}
+    <ul class="my-4 space-y-2">
+      {% for message in messages %}
+        <li class="px-4 py-2 rounded-lg shadow-lg
+          {% if message.tags == 'success' %}bg-green-500 text-white
+          {% elif message.tags == 'warning' %}bg-yellow-500 text-black
+          {% elif message.tags == 'error' %}bg-red-500 text-white
+          {% endif %}">
+          {{ message }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  
+
+
+
+    <h1 class="text-3xl text-black font-bold text-center py-5">Carrier Partner Registration</h1>
+
+
+
+
+
+	<div x-data="app()" x-cloak>
+
+		<div class="max-w-3xl rounded-2xl bg-gray-100 mx-auto px-5 py-10 mb-10">
+
+            <div class="max-w-3xl rounded-2xl bg-gray-100 mx-auto px-5 py-10 mb-10">
+
+                <div 
+                class="bg-yellow-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" 
+              >
+                <p>You can save and continue later by skipping to step 10 and pressing "Save and Continue Later"</p>
+              </div>
+
+
+
+			<div x-show.transition="step != 'complete'">	
+				<!-- Top Navigation -->
+				<div class="border-b-2 py-4">
+					<div class="uppercase tracking-wide text-xs font-bold text-gray-700 mb-1 leading-tight" x-text="`Step: ${step} of 10`"></div>
+					<div class="flex flex-col md:flex-row md:items-center md:justify-between">
+						<div class="flex-1">
+							<div x-show="step === 1">
+								<div class="text-lg font-bold text-black leading-tight">Overview</div>
+							</div>
+							
+							<div x-show="step === 2">
+								<div class="text-lg font-bold text-black leading-tight">Company Info</div>
+							</div>
+							
+							<div x-show="step === 3">
+								<div class="text-lg font-bold text-black leading-tight">Identification</div>
+							</div>
+
+                            <div x-show="step === 4">
+								<div class="text-lg font-bold text-black leading-tight">Optional Contact Info</div>
+							</div>
+
+                            <div x-show="step === 5">
+								<div class="text-lg font-bold text-black leading-tight">Services (Select all that apply.)</div>
+							</div>
+
+                            <div x-show="step === 6">
+								<div class="text-lg font-bold text-black leading-tight">Equipment</div>
+							</div>
+                            <div x-show="step === 7">
+								<div class="text-lg font-bold text-black leading-tight">Facilities</div>
+							</div>
+                            <div x-show="step === 8">
+								<div class="text-lg font-bold text-black leading-tight">Locations of Service (Select all that apply.)</div>
+							</div>
+                            <div x-show="step === 9">
+								<div class="text-lg font-bold text-black leading-tight">Documents</div>
+							</div>
+
+						</div>
+
+						<div class="flex items-center md:w-64">
+							<div class="w-full bg-gray-300 rounded-full mr-2">
+								<div class="rounded-full bg-green-400 text-xs leading-none h-2 text-center text-black" :style="'width: '+ parseInt(step / 10 * 100) +'%'"></div>
+							</div>
+							<div class="text-xs w-10 text-gray-700" x-text="parseInt(step / 10 * 100) +'%'"></div>
+						</div>
+					</div>
+				</div>
+				<!-- /Top Navigation -->
+
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+				<!-- Step Content -->
+				<div class="py-5">
+                    <div x-show.transition.in="step === 1">
+
+                        <div class="w-full">
+                            <div class="pb-5">
+                                <p class="text-xl font-medium text-gray-800 text-center mb-2">Welcome to Carrier Partner Registration</p>
+
+                                <p class="text-lg font-medium text-gray-800 mb-2">Requirements for Carrier Setup:</p>
+                                <ul class="list-disc text-gray-700 leading-6 ml-6">
+                                    <li>Current Year W-9.</li>
+                                    <li>Signed Agreement.</li>
+                                    <li>
+                                        Certificate of Insurance with The 357 Company as certificate holder.<br>
+                                        Holder Information:<br>
+                                        The 357 Company<br>
+                                        242 N York St., Suite 357<br>
+                                        Elmhurst, IL 60126
+                                    </li>
+                                    <li>Copy of Original Operating Authority with any re-entitlements.</li>
+                                </ul>
+                        
+                            </div>
+                        </div>
+                    </div>
+					<div x-show.transition.in="step === 2">
+
+                        <div class="w-full sm:flex">
+                            <div class="sm:w-1/2 sm:pr-3 sm:mr-3 sm:border-r">
+                                <div class="mb-2">
+                                    {{ form.email.errors }}
+                                    <label class="text-black font-bold" for="{{ form.email.id_for_label }}">Company Email (REQUIRED):</label>
+                                    {{ form.email }}
+                                </div>
+
+                                <div class="mb-2">
+                                    {{ form.company.errors }}
+                                    <label class="text-black font-bold" for="{{ form.company.id_for_label }}">Company Name (REQUIRED):</label>
+                                    {{ form.company }}
+                                </div>
+
+
+
+                                <div class="mb-2">
+                                    {{ form.contact.errors }}
+                                    <label class="text-black font-bold" for="{{ form.contact.id_for_label }}">Your Name (REQUIRED):</label>
+                                    {{ form.contact }}
+                                </div>
+
+                                <div class="mb-2">
+                                    {{ form.address.errors }}
+                                    <label class="text-black font-bold" for="{{ form.address.id_for_label }}">Address (Required):</label>
+                                    {{ form.address }}
+                                </div>
+
+
+                                <div class="mb-2">
+                                    {{ form.scac.errors }}
+                                    <label class="text-black font-bold" for="{{ form.scac.id_for_label }}">SCAC:</label>
+                                    {{ form.scac }}
+                                </div>
+
+
+
+                            </div>
+                            <div class="sm:w-1/2">
+                                <div class="mb-2">
+                                    {{ form.mcnumber.errors }}
+                                    <label class="text-black font-bold" for="{{ form.mcnumber.id_for_label }}">MC Number (Required):</label>
+                                    {{ form.mcnumber }}
+                                </div>
+
+                                <div class="mb-5">
+                                    {{ form.mainphone.errors }}
+                                    <label class="text-black font-bold" for="{{ form.mainphone.id_for_label }}">Your Main Phone (REQUIRED):</label>
+                                    {{ form.mainphone }}
+                                </div>
+
+                                <div class="mb-5">
+                                    {{ form.mobilephone.errors }}
+                                    <label class="text-black font-bold" for="{{ form.mobilephone.id_for_label }}">Your Mobile Phone:</label>
+                                    {{ form.mobilephone }}
+                                </div>
+
+                                <div class="mb-2">
+                                    {{ form.fax.errors }}
+                                    <label class="text-black font-bold" for="{{ form.fax.id_for_label }}">Fax :</label>
+                                    {{ form.fax }}
+                                </div>
+
+                            </div>
+
+					        </div>
+                    </div>
+					<div x-show.transition.in="step === 3">
+                        <div class="w-full sm:flex">
+                            <div class="sm:w-1/2 sm:pr-3 sm:mr-3 sm:border-r">
+                                
+                                <div class="mb-2">
+                                    {{ form.usdotnumber.errors }}
+                                    <label class="text-black font-bold" for="{{ form.usdotnumber.id_for_label }}">US DOT #:</label>
+                                    {{ form.usdotnumber }}
+                                </div>
+        
+                                <div class="mb-2">
+                                    {{ form.feinnumber.errors }}
+                                    <label class="text-black font-bold" for="{{ form.feinnumber.id_for_label }}">FEIN # (ONLY THE NUMBER, NO DASH)</label>
+                                    {{ form.feinnumber }}
+                                </div>
+        
+                                <div class="mb-2">
+                                    {{ form.techprovider.errors }}
+                                    <label class="text-black font-bold" for="{{ form.techprovider.id_for_label }}">Carrier Software Provider / TMS :</label>
+                                    {{ form.techprovider }}
+                                </div>
+        
+                            </div>
+                            <div class="sm:w-1/2">
+        
+                                <div class="mb-4 mt-8 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.hazmat.errors }}
+                                    <label class="text-black font-bold" for="{{ form.hazmat.id_for_label }}">HAZMAT:</label>
+                                    {{ form.hazmat }}
+                                </div>
+        
+                                <div class="mb-4 mt-9 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.smartway.errors }}
+                                    <label class="text-black font-bold" for="{{ form.smartway.id_for_label }}">Smartway :</label>
+                                    {{ form.smartway }}
+                                </div>
+
+                                <div class="mb-2">
+                                    {{ form.trackingtech.errors }}
+                                    <label class="text-black font-bold" for="{{ form.trackingtech.id_for_label }}">Tracking Technology :</label>
+                                    {{ form.trackingtech }}
+                                </div>
+        
+                            </div>
+        
+                            </div>
+
+					</div>
+                    <div x-show.transition.in="step === 4">
+
+                        <div class="w-full">
+
+                            <div class="">
+                                <div class="mb-2">
+                                    {{ form.ownername.errors }}
+                                    <label class="text-black font-bold" for="{{ form.ownername.id_for_label }}">Owner Name:</label>
+                                    {{ form.ownername }}
+                                </div>
+                                
+                                <div class="mb-2">
+                                    {{ form.ownerphone.errors }}
+                                    <label class="text-black font-bold" for="{{ form.ownerphone.id_for_label }}">Owner Phone:</label>
+                                    {{ form.ownerphone }}
+                                </div>
+                                
+                                <div class="mb-2">
+                                    {{ form.owneremail.errors }}
+                                    <label class="text-black font-bold" for="{{ form.owneremail.id_for_label }}">Owner Email:</label>
+                                    {{ form.owneremail }}
+                                </div>
+                                
+                                <div class="mb-2">
+                                    {{ form.dispatchname.errors }}
+                                    <label class="text-black font-bold" for="{{ form.dispatchname.id_for_label }}">Dispatch Name:</label>
+                                    {{ form.dispatchname }}
+                                </div>
+                                
+                                <div class="mb-2">
+                                    {{ form.dispatchphone.errors }}
+                                    <label class="text-black font-bold" for="{{ form.dispatchphone.id_for_label }}">Dispatch Phone:</label>
+                                    {{ form.dispatchphone }}
+                                </div>
+                                
+                                <div class="mb-2">
+                                    {{ form.dispatchemail.errors }}
+                                    <label class="text-black font-bold" for="{{ form.dispatchemail.id_for_label }}">Dispatch Email:</label>
+                                    {{ form.dispatchemail }}
+                                </div>
+                                
+                                <div class="mb-2">
+                                    {{ form.accountingname.errors }}
+                                    <label class="text-black font-bold" for="{{ form.accountingname.id_for_label }}">Accounting Name:</label>
+                                    {{ form.accountingname }}
+                                </div>
+                                
+                                <div class="mb-2">
+                                    {{ form.accountingphone.errors }}
+                                    <label class="text-black font-bold" for="{{ form.accountingphone.id_for_label }}">Accounting Phone:</label>
+                                    {{ form.accountingphone }}
+                                </div>
+                                
+                                <div class="mb-2">
+                                    {{ form.accountingemail.errors }}
+                                    <label class="text-black font-bold" for="{{ form.accountingemail.id_for_label }}">Accounting Email:</label>
+                                    {{ form.accountingemail }}
+                                </div>
+                                
+
+                            </div>
+
+					        </div>
+                    </div>
+                    <div x-show.transition.in="step === 5">
+                        <div class="w-full sm:flex">
+                            <div class="sm:w-1/2 sm:pr-3 sm:mr-3 sm:border-r">
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.ltl.errors }}
+                                    <label class="text-black font-bold" for="{{ form.ltl.id_for_label }}">LTL:</label>
+                                    {{ form.ltl }}
+                                </div>
+        
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.ftl.errors }}
+                                    <label class="text-black font-bold" for="{{ form.ftl.id_for_label }}">FTL:</label>
+                                    {{ form.ftl }}
+                                </div>
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.lastmile.errors }}
+                                    <label class="text-black font-bold" for="{{ form.lastmile.id_for_label }}">Last Mile:</label>
+                                    {{ form.lastmile }}
+                                </div>
+        
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.middlemile.errors }}
+                                    <label class="text-black font-bold" for="{{ form.middlemile.id_for_label }}">Middle Mile:</label>
+                                    {{ form.middlemile }}
+                                </div>
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.transloading.errors }}
+                                    <label class="text-black font-bold" for="{{ form.transloading.id_for_label }}">Transloading:</label>
+                                    {{ form.transloading }}
+                                </div>
+        
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.airfreight.errors }}
+                                    <label class="text-black font-bold" for="{{ form.airfreight.id_for_label }}">Air frieght:</label>
+                                    {{ form.airfreight }}
+                                </div>
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.flatbeds.errors }}
+                                    <label class="text-black font-bold" for="{{ form.flatbeds.id_for_label }}">Flatbeds:</label>
+                                    {{ form.flatbeds }}
+                                </div>
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.white.errors }}
+                                    <label class="text-black font-bold" for="{{ form.whiteglove.id_for_label }}">White Glove:</label>
+                                    {{ form.whiteglove }}
+                                </div>
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.insidedelivery.errors }}
+                                    <label class="text-black font-bold" for="{{ form.insidedelivery.id_for_label }}">Inside Delivery:</label>
+                                    {{ form.insidedelivery }}
+                                </div>
+
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.b2b.errors }}
+                                    <label class="text-black font-bold" for="{{ form.b2b.id_for_label }}">B2B:</label>
+                                    {{ form.b2b }}
+                                </div>
+                                
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.tsa.errors }}
+                                    <label class="text-black font-bold" for="{{ form.tsa.id_for_label }}">TSA:</label>
+                                    {{ form.tsa }}
+                                </div>
+
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.airport.errors }}
+                                    <label class="text-black font-bold" for="{{ form.airport.id_for_label }}">Airport Recovery:</label>
+                                    {{ form.airport }}
+                                </div>
+        
+                            </div>
+                            <div class="sm:w-1/2">
+        
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.otr.errors }}
+                                    <label class="text-black font-bold" for="{{ form.otr.id_for_label }}">OTR:</label>
+                                    {{ form.otr }}
+                                </div>
+        
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.refrigerated.errors }}
+                                    <label class="text-black font-bold" for="{{ form.refrigerated.id_for_label }}">Refrigerated:</label>
+                                    {{ form.refrigerated }}
+                                </div>
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.hotshots.errors }}
+                                    <label class="text-black font-bold" for="{{ form.hotshots.id_for_label }}">Hot Shots:</label>
+                                    {{ form.hotshots }}
+                                </div>
+        
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.localpickupanddelivery.errors }}
+                                    <label class="text-black font-bold" for="{{ form.localpickupanddelivery.id_for_label }}">Local Pickup and Delivery:</label>
+                                    {{ form.localpickupanddelivery }}
+                                </div>
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.expedited.errors }}
+                                    <label class="text-black font-bold" for="{{ form.expedited.id_for_label }}">Expedited:</label>
+                                    {{ form.expedited }}
+                                </div>
+        
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.highvalue.errors }}
+                                    <label class="text-black font-bold" for="{{ form.highvalue.id_for_label }}">High Value:</label>
+                                    {{ form.highvalue }}
+                                </div>
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.drayage.errors }}
+                                    <label class="text-black font-bold" for="{{ form.drayage.id_for_label }}">Drayage:</label>
+                                    {{ form.drayage }}
+                                </div>
+
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.residential.errors }}
+                                    <label class="text-black font-bold" for="{{ form.residential.id_for_label }}">Residential:</label>
+                                    {{ form.residential }}
+                                </div>
+
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.liftgates.errors }}
+                                    <label class="text-black font-bold" for="{{ form.liftgates.id_for_label }}">Lift Gates:</label>
+                                    {{ form.liftgates }}
+                                </div>
+
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.hemp.errors }}
+                                    <label class="text-black font-bold" for="{{ form.hemp.id_for_label }}">Hemp:</label>
+                                    {{ form.hemp }}
+                                </div>
+
+                                <div class="mb-2 border py-3 px-2 rounded-xl justify-center flex">
+                                    {{ form.medical.errors }}
+                                    <label class="text-black font-bold" for="{{ form.medical.id_for_label }}">Medical:</label>
+                                    {{ form.medical }}
+                                </div>
+        
+                            </div>
+        
+                            </div>
+
+					</div>
+                    <div x-show.transition.in="step === 6">
+                        <div class="w-full sm:flex">
+                            <div class="sm:w-1/2 sm:pr-3 sm:mr-3 sm:border-r">
+                                <div class="mb-2">
+                                    {{ form.sprinterqty.errors }}
+                                    <label class="text-black font-bold" for="{{ form.sprinterqty.id_for_label }}">Sprinter Van Quantity:</label>
+                                    {{ form.sprinterqty }}
+                                </div>
+        
+                                <div class="mb-2">
+                                    {{ form.straughttruckqty.errors }}
+                                    <label class="text-black font-bold" for="{{ form.straughttruckqty.id_for_label }}">Straight Truck Quantity:</label>
+                                    {{ form.straughttruckqty }}
+                                </div>
+        
+                                <div class="mb-2">
+                                    {{ form.dryvanqty.errors }}
+                                    <label class="text-black font-bold" for="{{ form.dryvanqty.id_for_label }}">Dry Van Quantity :</label>
+                                    {{ form.dryvanqty }}
+                                </div>
+                                <div class="mb-2">
+                                    {{ form.automobileqty.errors }}
+                                    <label class="text-black font-bold" for="{{ form.automobileqty.id_for_label }}">Automobile Quantity:</label>
+                                    {{ form.automobileqty }}
+                                </div>
+
+                                <div class="mb-2">
+                                    {{ form.lastmileqty.errors }}
+                                    <label class="text-black font-bold" for="{{ form.lastmileqty.id_for_label }}">Last Mile Quantity:</label>
+                                    {{ form.lastmileqty }}
+                                </div>
+
+        
+                            </div>
+                            <div class="sm:w-1/2">
+        
+                                <div class="mb-2">
+                                    {{ form.reeferqty.errors }}
+                                    <label class="text-black font-bold" for="{{ form.reeferqty.id_for_label }}">Refrigerated Trailer Quantity:</label>
+                                    {{ form.reeferqty }}
+                                </div>
+        
+                                <div class="mb-2">
+                                    {{ form.flatbedqty.errors }}
+                                    <label class="text-black font-bold" for="{{ form.flatbedqty.id_for_label }}">Flatbed Quantity:</label>
+                                    {{ form.flatbedqty }}
+                                </div>
+        
+                                <div class="mb-2">
+                                    {{ form.warehousesqft.errors }}
+                                    <label class="text-black font-bold" for="{{ form.warehousesqft.id_for_label }}">Warehouse Square Footage:</label>
+                                    {{ form.warehousesqft }}
+                                </div>
+
+                                <div class="mb-2">
+                                    {{ form.highcubedqty.errors }}
+                                    <label class="text-black font-bold" for="{{ form.highcubedqty.id_for_label }}">High Cubed Quantity:</label>
+                                    {{ form.highcubedqty }}
+                                </div>
+
+                                <div class="mb-2">
+                                    {{ form.tsaqty.errors }}
+                                    <label class="text-black font-bold" for="{{ form.tsaqty.id_for_label }}">TSA Quantity:</label>
+                                    {{ form.tsaqty }}
+                                </div>
+        
+                            </div>
+        
+                        </div>
+
+					</div>
+                    <div x-show.transition.in="step === 7">
+                        <div class="w-full sm:flex">
+                            <div class="w-full">
+                                <div class="mb-2 pb-3 border-b">
+                                    {{ form.inductionfacilityloc1.errors }}
+                                    <label class="text-black font-bold" for="{{ form.inductionfacilityloc1.id_for_label }}">Induction Facility Location 1:</label>
+                                    {{ form.inductionfacilityloc1 }}
+                                    <label class="text-black font-bold ml-2" for="{{ form.inductionfacilityloc1_temp_controlled.id_for_label }}">Temperature Controlled:</label>
+                                    {{ form.inductionfacilityloc1_temp_controlled }}
+                                </div>
+                                
+                                <div class="mb-2 pb-3 border-b">
+                                    {{ form.inductionfacilityloc2.errors }}
+                                    <label class="text-black font-bold" for="{{ form.inductionfacilityloc2.id_for_label }}">Induction Facility Location 2:</label>
+                                    {{ form.inductionfacilityloc2 }}
+                                    <label class="text-black font-bold ml-2" for="{{ form.inductionfacilityloc2_temp_controlled.id_for_label }}">Temperature Controlled:</label>
+                                    {{ form.inductionfacilityloc2_temp_controlled }}
+                                </div>
+                                
+                                <div class="mb-2 pb-3 border-b">
+                                    {{ form.inductionfacilityloc3.errors }}
+                                    <label class="text-black font-bold" for="{{ form.inductionfacilityloc3.id_for_label }}">Induction Facility Location 3:</label>
+                                    {{ form.inductionfacilityloc3 }}
+                                    <label class="text-black font-bold ml-2" for="{{ form.inductionfacilityloc3_temp_controlled.id_for_label }}">Temperature Controlled:</label>
+                                    {{ form.inductionfacilityloc3_temp_controlled }}
+                                </div>
+                                
+                                <div class="mb-2 pb-3 border-b">
+                                    {{ form.inductionfacilityloc4.errors }}
+                                    <label class="text-black font-bold" for="{{ form.inductionfacilityloc4.id_for_label }}">Induction Facility Location 4:</label>
+                                    {{ form.inductionfacilityloc4 }}
+                                    <label class="text-black font-bold ml-2" for="{{ form.inductionfacilityloc4_temp_controlled.id_for_label }}">Temperature Controlled:</label>
+                                    {{ form.inductionfacilityloc4_temp_controlled }}
+                                </div>
+                                
+                                <div class="mb-2 pb-3 border-b">
+                                    {{ form.inductionfacilityloc5.errors }}
+                                    <label class="text-black font-bold" for="{{ form.inductionfacilityloc5.id_for_label }}">Induction Facility Location 5:</label>
+                                    {{ form.inductionfacilityloc5 }}
+                                    <label class="text-black font-bold ml-2" for="{{ form.inductionfacilityloc5_temp_controlled.id_for_label }}">Temperature Controlled:</label>
+                                    {{ form.inductionfacilityloc5_temp_controlled }}
+                                </div>
+                                
+                                
+                                <div class="mb-2">
+                                    {{ form.coverageradius.errors }}
+                                    <label class="text-black font-bold" for="{{ form.coverageradius.id_for_label }}">City Coverage Radius:</label>
+                                    {{ form.coverageradius }}
+                                </div>
+                                
+
+                            </div>
+                        </div>
+					</div>
+                    <div x-show.transition.in="step === 8">
+                        <div class="w-full sm:flex">
+                            <div class="sm:w-1/3 sm:pr-3 sm:mr-3 sm:border-r">
+                                <div class="mb-2">
+                                    {{ form.usservice.errors }}
+                                    <label class="text-black font-bold" for="{{ form.usservice.id_for_label }}">Service in the US:</label>
+                                    {{ form.usservice }}
+                                </div>
+                            </div>
+                            <div class="sm:w-1/3 sm:pr-3 sm:mr-3 sm:border-r">
+                                <div class="mb-2">
+                                    {{ form.canservice.errors }}
+                                    <label class="text-black font-bold" for="{{ form.canservice.id_for_label }}">Service in Canada:</label>
+                                    {{ form.canservice }}
+                                </div>
+                            </div>
+
+                            <div class="sm:w-1/3 sm:pr-3 sm:mr-3">
+                                <div class="mb-2">
+                                    {{ form.mexservice.errors }}
+                                    <label class="text-black font-bold" for="{{ form.mexservice.id_for_label }}">Service in Canada:</label>
+                                    {{ form.mexservice }}
+                                </div>
+                            </div>
+        
+                        </div>
+
+					</div>
+                    <div x-show.transition.in="step === 9">
+                        <div class="w-full">
+                            <div class="">
+                                <div class="mb-2">
+                                    {{ form.w9.errors }}
+                                    <label class="text-black font-bold" for="{{ form.w9.id_for_label }}">Upload W-9 Form:</label>
+                                    {{ form.w9 }}
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="mb-2">
+                                    {{ form.insurance.errors }}
+                                    <label class="text-black font-bold" for="{{ form.insurance.id_for_label }}">Upload Insurance:</label>
+                                    {{ form.insurance }}
+                                </div>
+                            </div>
+
+                            <div class="">
+                                <div class="mb-2">
+                                    {{ form.operatingauth.errors }}
+                                    <label class="text-black font-bold" for="{{ form.operatingauth.id_for_label }}">Upload Operating Authority:</label>
+                                    {{ form.operatingauth }}
+                                </div>
+                            </div>
+
+                            <div class="">
+                                <div class="mb-2">
+                                    {{ form.zipcoverage.errors }}
+                                    <label class="text-black font-bold" for="{{ form.zipcoverage.id_for_label }}">Zip Coverage:</label>
+                                    {{ form.zipcoverage }}
+                                </div>
+                            </div>
+
+                            <div class="">
+                                <div class="mb-2">
+                                    {{ form.insuranceexp.errors }}
+                                    <label class="text-black font-bold" for="{{ form.insuranceexp.id_for_label }}">Insurance Expiration:</label>
+                                    {{ form.insuranceexp }}
+                                </div>
+                            </div>
+        
+                            </div>
+
+					</div>
+
+                    <div x-show.transition.in="step === 10">
+                        <div class="w-full">
+
+                          <div class="pb-5">
+                            <p class="text-lg font-medium text-gray-800 mb-2">Disclaimer:</p>
+                            <p class="text-gray-700 leading-6">
+                              Make sure to double check all the information you entered is correct, especially your Company Name, Your Name, Your Email, and Your Phone. If any of this information is invalid, you may encounter errors.
+                            </p>
+                          </div>
+                          <div class="">
+                            <p class="text-lg font-medium text-gray-800 mb-2">E-sign Agreement:</p>
+                            <p class="text-gray-700 leading-6">
+                              If you are sure that all the information entered is correct, press the "Complete" button to e-sign the agreement.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      
+
+				</div>
+				<!-- / Step Content -->
+			</div>
+		</div>
+
+        <div id="loading-screen" class="fixed inset-0 z-50 flex items-center justify-center text-2xl text-white bg-black bg-opacity-50" style="display: none;">
+            Loading...
+        </div>
+
+
+
+		<!-- Bottom Navigation -->	
+		<div class="fixed bottom-0 left-0 right-0 z-50 py-5 bg-white shadow-md" x-show="step != 'complete'">
+			<div class="max-w-5xl mx-auto px-4">
+				<div class="flex justify-between">
+					<div class="">
+						<a
+                            href="#"
+							x-show="step > 1"
+							@click="step--"
+							class="w-32 focus:outline-none py-2 px-5 shadow-sm text-center text-black bg-gray-200 hover:bg-gray-100 font-medium border" 
+						>Previous</a>
+					</div>
+
+					<div class="">
+
+                        <button
+                        type = "submit"
+                        value = "Save"
+                        name = "save"
+                        x-show="step === 10"
+                        class="w-72 focus:outline-none border py-1 border-transparent shadow-sm text-center text-indigo-500 bg-white border-2 border-indigo-500 hover:bg-indigo-600 font-medium"
+                    >Save and Continue Later</button>
+
+                    <a
+                    href="#"
+                    x-show="step < 10"
+                    @click="if(step === 2) { checkRequiredFields(); } else { step++; showError = false; missingFields = []; }"
+                    class="w-32 focus:outline-none border border-transparent py-2 px-5 shadow-sm text-center text-white bg-indigo-500 hover:bg-indigo-600 font-medium" 
+                >Next</a>
+                
+
+                <button
+                id="submitButton"
+                type="submit"
+                value="Submit"
+                name="complete"
+                x-show="step === 10"
+                :disabled="loading"
+                @click="loading = true"
+                class="w-32 sm:w-72 focus:outline-none border border-transparent py-2 px-5 shadow-sm text-center text-white bg-green-500 hover:bg-green-600 font-medium"
+            >
+                <span x-show="!loading">Sign Agreement and Complete</span>
+                <span x-show="loading">Loading...</span>
+            </button>
+					</div>
+				</div>
+			</div>
+        </form>
+		</div>
+        
+		<!-- / Bottom Navigation https://placehold.co/300x300/e2e8f0/cccccc -->	
+	</div>
+    
+
+	<script>
+            function app() {
+                return {
+                    // Existing variables and functions...
+                    step: 1, 
+                    showError: false, 
+                    loading: false,
+                    missingFields: [],
+                    checkRequiredFields() {
+                        const fields = ['company_email', 'company_name', 'your_name', 'address']; // Add other required fields as necessary
+                        this.missingFields = [];
+                        fields.forEach(field => {
+                            if (!this.$refs[field].value) {
+                                this.missingFields.push(field);
+                            }
+                        });
+                        if (this.missingFields.length) {
+                            this.showError = true;
+                        } else {
+                            this.step++;
+                            this.showError = false;
+                        }
+                    }
+                };
+            }
+            
+            
+            
+            
+            
+            
+	</script>
+    
+
+
+{% endblock %}

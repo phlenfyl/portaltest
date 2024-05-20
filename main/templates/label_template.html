@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Shipping Label</title>
+  </head>
+  <body>
+    <h1>Shipping Label</h1>
+    <p>From: {{ label.from_address }}</p>
+    <p>To: {{ label.name }}</p>
+    <p>{{ label.address1 }}</p>
+    <p>{{ label.address2 }}</p>
+    <p>{{ label.city }}, {{ label.state }} {{ label.zip }}</p>
+    <p>Expected delivery date: {{ label.expected_delivery_date }}</p>
+    <p>Reference 1: {{ label.ref1 }}</p>
+    <p>Reference 2: {{ label.ref2 }}</p>
+    <p>Instructions: {{ label.instr }}</p>
+  </body>
+</html>
+

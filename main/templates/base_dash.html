@@ -1,0 +1,83 @@
+<!DOCTYPE html> 
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>357 Company</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% comment %} <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css" {% endcomment %}
+/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#175CD3",
+                        grey: "#344054",
+                        greyBg: "#EAECF0",
+                    },
+                    screen: {
+                        "2xl": "1440px",
+                        "bigDesktop": "1530px",
+                    },
+                },
+            },
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    {% block extraStyle  %}
+    {% endblock %}
+</head>
+
+  <body>
+    <style>
+      .hide-scroll {
+        scrollbar-width: 0.1;
+      }
+
+      .hide-scroll::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 2rem transparent;
+        scroll-behavior: smooth;
+      }
+
+      .hide-scroll::-webkit-scrollbar {
+        width: 0.1rem;
+        opacity: 0;
+        scroll-behavior: smooth;
+      }
+
+    </style>
+    <div class="px-4 lg:px-12 bg-[#FCFCFD]">
+      {% include 'navbar.html' %}
+
+
+      {% for message in messages %}
+        <div id="message" class="fixed flex items-center justify-center bottom-0 right-0 mb-4 mr-4 px-3 py-1 rounded 
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}bg-red-500
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}bg-yellow-500
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}bg-blue-500
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}bg-green-500
+            {% else %}bg-gray-500
+            {% endif %} text-white" role="alert">
+            <span class="block sm:inline">{{ message }}</span>
+            <span class=" px-4 py-3">
+                <svg id="close" class="fill-current h-6 w-6 text-white cursor-pointer" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"></path></svg>
+            </span>
+        </div>
+      {% endfor %}
+
+       <!-- Toast Notification for asyc requests -->
+       <div id="toast" class="flex gap-4 fixed bottom-4 right-4 border p-4 hidden transition-opacity duration-75 rounded">
+          <p id = "toastMessage" class = "text-white">This is a toast notification.</p>
+          <img id="close" src = {% static 'assets/xclosewhite.svg' %} class="text-white scale-[1.2] cursor-pointer hover:scale-[1.3]" />
+      </div>
+       {% block content %} {% endblock content %}
+       <script src="{% static 'js/index.js' %}"></script>
+       {% block extrascript %}
+        {% endblock %}
+    </div>
+  </body>
+
+</html>

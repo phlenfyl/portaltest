@@ -1,0 +1,9 @@
+Hi {{ contact }},
+
+Thank you for the opportunity to earn your trust as your logistics partner! 
+
+Click the link below to view the quote details and accept!
+
+{{ link }}
+
+- The 357 Company

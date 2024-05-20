@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<div class="relative">
+    <canvas id="deliveryVolumeChart" class="w-full h-60"></canvas>
+</div>
+<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+    <div class="flex flex-wrap -mx-2 overflow-hidden sm:-mx-2 md:-mx-2 lg:-mx-2 xl:-mx-2">
+
+        <!-- On-Time Deliveries Card -->
+        <div class="my-2 px-2 w-full overflow-hidden sm:my-2 sm:px-2 sm:w-1/2 md:my-2 md:px-2 md:w-1/2 lg:my-2 lg:px-2 lg:w-1/2 xl:my-2 xl:px-2 xl:w-1/2">
+            <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+                <div class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-light-blue-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
+                <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
+                    <h1 class="text-xl leading-8 font-extrabold tracking-tight sm:text-2xl mb-4">
+                        On-Time Deliveries Chart
+                    </h1>
+                    <div class="relative">
+                        <canvas id="deliveryPieChart" class="w-full h-60"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- On-Time Pickups Card -->
+        <div class="my-2 px-2 w-full overflow-hidden sm:my-2 sm:px-2 sm:w-1/2 md:my-2 md:px-2 md:w-1/2 lg:my-2 lg:px-2 lg:w-1/2 xl:my-2 xl:px-2 xl:w-1/2">
+            <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+                <div class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-light-blue-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
+                <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
+                    <h1 class="text-xl leading-8 font-extrabold tracking-tight sm:text-2xl mb-4">
+                        On-Time Pickups Chart
+                    </h1>
+                    <div class="relative">
+                        <canvas id="pickupPieChart" class="w-full h-60"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    var ctx = document.getElementById('deliveryPieChart').getContext('2d');
+    var pickupCtx = document.getElementById('pickupPieChart').getContext('2d');
+    
+    var deliveryData = {
+        labels: ['On Time', 'Late'],
+        datasets: [{
+            data: [{{ on_time_percentage }}, 100 - {{ on_time_percentage }}],
+            backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+            borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+            borderWidth: 1
+        }]
+    };
+
+    var pickupData = {
+        labels: ['On Time', 'Late'],
+        datasets: [{
+            data: [{{ on_time_percentage_pickup }}, 100 - {{ on_time_percentage_pickup }}],
+            backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+            borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+            borderWidth: 1
+        }]
+    };
+
+    var options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'On Time vs Late'
+            }
+        }
+    };
+
+    var deliveryPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: deliveryData,
+        options: options
+    });
+
+    var pickupPieChart = new Chart(pickupCtx, {
+        type: 'pie',
+        data: pickupData,
+        options: options
+    });
+</script>
+
+<script>
+    var ctx = document.getElementById('deliveryVolumeChart').getContext('2d');
+
+    var data = {
+        labels: {{ date_range|safe }},
+        datasets: [{
+            label: 'Deliveries per Day',
+            data: {{ deliveries_per_day|safe }},
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+            fill: false
+        }]
+    };
+
+    var options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Delivery Volume Over Time (Last 30 Days)'
+            }
+        },
+        scales: {
+            x: {
+                type: 'timeseries'
+            }
+        }
+    };
+
+    var lineChart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: options
+    });
+</script>
+
+{% endblock %}

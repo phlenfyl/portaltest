@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="px-20">
+<div class="my-4 flex justify-between">
+    <a href="{% url 'adminquote' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Create Quote
+    </a>
+    <a href="{% url 'adminquoteaccount' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Create Quote Account
+    </a>
+</div>
+
+<h2 class="text-2xl font-bold mb-4">Open Quotes</h2>
+{% if open_quotes %}
+<table class="table-auto w-full">
+    <thead>
+        <tr>
+            <th class="px-4 py-2">Account</th>
+            <th class="px-4 py-2">Pickup</th>
+            <th class="px-4 py-2">Dropoff</th>
+            <th class="px-4 py-2">Cost</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for quote in open_quotes %}
+        <tr>
+            <td class="border px-4 py-2">{{ quote.account }}</td>
+            <td class="border px-4 py-2">{{ quote.pickup }}</td>
+            <td class="border px-4 py-2">{{ quote.dropoff }}</td>
+            <td class="border px-4 py-2">{{ quote.cost }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No open quotes found.</p>
+{% endif %}
+
+<h2 class="text-2xl font-bold mt-8 mb-4">Accepted Quotes</h2>
+{% if accepted_quotes %}
+<table class="table-auto w-full">
+    <thead>
+        <tr>
+            <th class="px-4 py-2">Account</th>
+            <th class="px-4 py-2">Pickup</th>
+            <th class="px-4 py-2">Dropoff</th>
+            <th class="px-4 py-2">Cost</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for quote in accepted_quotes %}
+        <tr>
+            <td class="border px-4 py-2">{{ quote.account }}</td>
+            <td class="border px-4 py-2">{{ quote.pickup }}</td>
+            <td class="border px-4 py-2">{{ quote.dropoff }}</td>
+            <td class="border px-4 py-2">{{ quote.cost }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No accepted quotes found.</p>
+{% endif %}
+
+<h2 class="text-2xl font-bold mt-8 mb-4">Denied Quotes</h2>
+{% if denied_quotes %}
+<table class="table-auto w-full">
+    <thead>
+        <tr>
+            <th class="px-4 py-2">Account</th>
+            <th class="px-4 py-2">Pickup</th>
+            <th class="px-4 py-2">Dropoff</th>
+            <th class="px-4 py-2">Cost</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for quote in denied_quotes %}
+        <tr>
+            <td class="border px-4 py-2">{{ quote.account }}</td>
+            <td class="border px-4 py-2">{{ quote.pickup }}</td>
+            <td class="border px-4 py-2">{{ quote.dropoff }}</td>
+            <td class="border px-4 py-2">${{ quote.cost }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No denied quotes found.</p>
+{% endif %}
+
+{% comment %} <h2 class="text-2xl font-bold mt-8 mb-4">All Live Quotes</h2>
+{% if all_live_quotes %}
+<table class="table-auto w-full">
+    <thead>
+        <tr>
+            <th class="px-4 py-2">Account</th>
+            <th class="px-4 py-2">Pickup</th>
+            <th class="px-4 py-2">Dropoff</th>
+            <th class="px-4 py-2">Cost</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for quote in all_live_quotes %}
+        <tr>
+            <td class="border px-4 py-2">{{ quote.account }}</td>
+            <td class="border px-4 py-2">{{ quote.pickup }}</td>
+            <td class="border px-4 py-2">{{ quote.dropoff }}</td>
+            <td class="border px-4 py-2">${{ quote.cost }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No live quotes found.</p>
+{% endif %} {% endcomment %}
+
+<h2 class="text-2xl font-bold mt-8 mb-4">Not Live Quotes</h2>
+{% if not_live_quotes %}
+<table class="table-auto w-full">
+    <thead>
+        <tr>
+            <th class="px-4 py-2">Account</th>
+            <th class="px-4 py-2">Pickup</th>
+            <th class="px-4 py-2">Dropoff</th>
+            <th class="px-4 py-2">Cost</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for quote in not_live_quotes %}
+        <tr>
+            <td class="border px-4 py-2">{{ quote.account }}</td>
+            <td class="border px-4 py-2">{{ quote.pickup }}</td>
+            <td class="border px-4 py-2">{{ quote.dropoff }}</td>
+            <td class="border px-4 py-2">${{ quote.cost }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No not live quotes found.</p>
+{% endif %}
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{
+    id : 859403, //Our internal ID for the order
+    externalid : 123890, //Customer's specified ID (This would be the ID in your system Greg)
+    deliverystatus = "Delviered",
+    delivery = "Some Date", //(For now this is a string, will want to change to Date format later.)
+    estimateddelivery = "Some Date",
+    departed = "Some Date",
+    podname = "James Wright",
+    podcomments = "Right Door",
+    signature = "link to image",
+    confirmationimage = "link to image",
+    customername = "Hayden Smith",
+    customerphone = "+16178490955",
+    customeraddress = "Some address",
+    customeraddress2 = "APT 2",
+    customercity = "Boston",
+    customerstate = "MA",
+    customerzip = "02215"
+}

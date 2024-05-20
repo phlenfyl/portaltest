@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1 class="text-2xl font-bold mb-4 px-20">Auctions</h1>
+
+
+
+
+
+
+
+
+
+
+  <div class="flex justify-center">
+    <a href="{% url 'auction-create' %}" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-6">
+      Create Auction
+    </a>
+  </div>
+  
+  
+  <div class="flex mb-8 px-20">
+    <h2 class="text-lg font-bold mr-4">Active Auctions</h2>
+    <span class="px-2 py-1 text-sm bg-green-100 text-green-800 rounded-full">{{ active_auctions|length }}</span>
+  </div>
+  
+  <div class="space-y-4 px-20">
+    {% for auction in active_auctions_accepted %}
+      <div class="p-4 bg-green-300 rounded-lg shadow-md">
+        <h3 class="text-lg font-bold mb-2"><a href="{% url 'auction-detail' auction.pk %}" class="hover:underline">Shipper: {{ auction.quote.account.company }}, ${{ auction.quote.cost }}</a></h3>
+        <p class="text-gray-600">Quote: {{ auction.quote }}</p>
+        <p class="text-gray-600">Created at: {{ auction.created_at }}</p>
+      </div>
+    {% empty %}
+    <p>No active auctions ready to be accepted found.</p>
+    {% endfor %}
+    {% for auction in active_auctions_open %}
+      <div class="p-4 bg-white rounded-lg shadow-md">
+        <h3 class="text-lg font-bold mb-2"><a href="{% url 'auction-detail' auction.pk %}" class="hover:underline">Shipper: {{ auction.quote.account.company }}, ${{ auction.quote.cost }}</a></h3>
+        <p class="text-gray-600">Quote: {{ auction.quote }}</p>
+        <p class="text-gray-600">Created at: {{ auction.created_at }}</p>
+      </div>
+    {% empty %}
+      <p>No active auctions found.</p>
+    {% endfor %}
+  </div>
+
+  <div class="flex my-8 px-20">
+    <h2 class="text-lg font-bold mr-4">Completed Auctions</h2>
+    <span class="px-2 py-1 text-sm bg-gray-100 text-gray-800 rounded-full">{{ completed_auctions|length }}</span>
+  </div>
+
+  <div class="space-y-4 px-20 mb-5">
+    {% for auction in completed_auctions %}
+      <div class="p-4 bg-gray-100 rounded-lg shadow-md">
+        <h3 class="text-lg font-bold mb-2"><a href="{% url 'auction-detail' auction.pk %}" class="hover:underline">{{ auction }}</a></h3>
+        <p class="text-gray-600">Quote: {{ auction.quote }}</p>
+        <p class="text-gray-600">Winner: 
+            {% for bid in auction.bids.all %}
+                {% if bid.accepted %}
+                    {{ bid.carrier.company }}, {{ bid.carrier.email }}
+                {% endif %}
+            {% endfor %}
+        </p>
+        <p class="text-gray-600">Created at: {{ auction.created_at }}</p>
+      </div>
+    {% empty %}
+      <p>No completed auctions found.</p>
+    {% endfor %}
+  </div>
+{% endblock %}
+

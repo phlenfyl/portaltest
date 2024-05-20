@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load humanize %}
+
+{% if object.accepted == null %}
+
+
+
+
+<div class="bg-opacity-5 bg-center h-full px-8 mx-auto xl:px-0 pt-3" style="background-image:linear-gradient(rgba(243, 244, 465, 0.95), rgba(243, 244, 246, .95)), url(https://i.imgur.com/nGTEuwp.png); background-size: contain;">
+
+
+
+
+
+<div class="mx-5 sm:w-1/3 overflow-x-auto border sm:mx-auto shadow-md rounded-2xl">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+
+        <tbody>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Company:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ object.account.company }}
+                </td>
+            
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Service:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ object.service }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Commodity:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ object.commodity }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Weight:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ object.weight }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Dimensions:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ object.dimensions }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Quantity:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ object.quantity }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Pieces:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ object.pieces }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Pickup:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ object.pickup }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Dropoff:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ object.dropoff }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Travel Time:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ object.traveltime }}
+                </td>
+
+            </tr>
+
+            {% if object.hempinsurance %}
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Insured Value:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                   ${{ object.hempinsurance|intcomma }}
+                </td>
+
+            </tr>
+
+            {% comment %} <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Hemp Insurance:
+                </th>
+                <td class="px-6 py-2">
+                    {% if isover == False %}
+                   <strike> ${{ before }} </strike>  $0
+                   {% else %}
+                   <strike> ${{ before }} </strike> ${{ after }}
+                   {% endif %}
+                </td>
+
+            </tr> {% endcomment %}
+
+            {% endif %}
+
+        </tbody>
+    </table>
+</div>
+
+{% if object.hempinsurance %}
+
+
+
+<div class="mx-auto justify-center items-center w-full mt-5">
+    <div class="mx-auto w-full max-w-md h-full md:h-auto">
+        <!-- Modal content -->
+        <div class="mx-auto text-center bg-green-400 rounded-2xl shadow p-1">
+
+            <p class="text-white text-xs sm:text-sm font-bold ">You are saving ${{ saved }} with our complimentary hemp cargo insurance!</p>
+
+        </div>
+    </div>
+</div>
+
+<p class="text-xs text-gray-500 text-center pt-2 font-bold">The 357 Company offers complimentary hemp cargo insurance for up to $75k in value.</p>
+{% if isover %}
+<p class="text-xs text-gray-500 text-center font-bold">Your load value is above $75K, if you wish to opt out of the <span class="text-black underline">additional cost of ${{after}}</span> email jp@357company.com.</p>
+<p class="text-xs text-gray-500 text-center font-bold">By doing so you acknowledge that your entire load value will not be insured.</p>
+{% endif %}
+{% endif %}
+<h3 class="text-center text-2xl text-black font-bold py-3"> Cost: ${{ object.cost }}</h3>
+
+
+{% if live %}
+
+<div class="mx-auto justify-center items-center w-full pb-5">
+    <div class="mx-auto w-full max-w-md h-full md:h-auto">
+        <!-- Modal content -->
+        <div class="mx-auto text-center bg-white rounded-2xl shadow dark:bg-gray-800 p-1 sm:p-5">
+
+            <p class="mb-2 text-black font-bold ">Accept the quote?</p>
+            <form id="quote-form" method="post">
+                {% csrf_token %}
+
+
+            <div class="flex justify-center items-center space-x-4">
+                  
+                    <button class=" text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 text-xs sm:text-base font-medium rounded-lg text-sm px-5 py-1 text-center mr-2 mb-2" type="submit" name="accepted" value="yes">Yes</button>
+                  
+            </div>
+            <div class="flex justify-center items-center space-x-4">
+                  
+                <button class="text-gray-500 underline text-xs" type="submit" name="accepted" value="no">Not at this time</button>
+              
+        </div>
+        </form>
+
+        </div>
+    </div>
+</div>
+</div>
+
+{% else %}
+
+<div class="mx-auto justify-center items-center w-full pb-5">
+    <div class="mx-auto w-full max-w-md h-full md:h-auto">
+        <!-- Modal content -->
+        <div class="mx-auto text-center bg-white rounded-2xl shadow dark:bg-gray-800 p-1 sm:p-5">
+
+            <p class="text-black font-bold ">This quote is no longer active.</p>
+            <p class="mb-2 text-black text-xs font-bold ">Email jp@357company.com "Reactivate quote id: {{ object.id }}" to reactivate.</p>
+
+
+        </div>
+    </div>
+</div>
+</div>
+{% endif %}
+
+
+
+  
+  <script>
+    $(document).ready(function() {
+      $('input[type=radio][name=accepted]').change(function() {
+        $('#quote-form').submit();
+      });
+    });
+    </script>
+
+{% elif object.accepted == True %}
+<div class="bg-opacity-5 bg-center h-screen px-8 mx-auto xl:px-0 pt-5" style="background-image:linear-gradient(rgba(243, 244, 465, 0.95), rgba(243, 244, 246, .95)), url(https://i.imgur.com/nGTEuwp.png); background-size: contain;">
+    <div class="mx-auto mt-52 z-50 justify-center items-center w-full">
+        <div class="mx-auto w-full max-w-md h-full md:h-auto">
+            <!-- Modal content -->
+            <div class="mx-auto text-center bg-white rounded-2xl shadow dark:bg-gray-800 sm:p-5">
+    
+                <p class="text-3xl text-green-500 font-bold">Quote Accepted!</p>
+
+    
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<div class="bg-opacity-5 bg-center h-screen px-8 mx-auto xl:px-0 pt-5" style="background-image:linear-gradient(rgba(243, 244, 465, 0.95), rgba(243, 244, 246, .95)), url(https://i.imgur.com/nGTEuwp.png); background-size: contain;">
+    <div class="mx-auto mt-52 z-50 justify-center items-center w-full">
+        <div class="mx-auto w-full max-w-md h-full md:h-auto">
+            <!-- Modal content -->
+            <div class="mx-auto text-center bg-white rounded-2xl shadow dark:bg-gray-800 sm:p-5">
+    
+                <p class="text-3xl text-red-500 font-bold">Quote Rejected</p>
+
+    
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endif %}
+{% endblock %}

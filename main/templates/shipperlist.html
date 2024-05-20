@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<script>
+    function openSidebar(companyDetails) {
+        document.getElementById("sidebar").classList.remove("hidden");
+        document.getElementById("accountName").innerText = companyDetails.name;
+        document.getElementById("contactPerson").innerText = companyDetails.contact.name;
+        document.getElementById("contactEmail").innerText = companyDetails.contact.email;
+        document.getElementById("contactPhone").innerText = companyDetails.contact.phone;
+        document.getElementById("address").innerText = companyDetails.address;
+        document.getElementById("taxId").innerText = companyDetails.taxId;
+        document.getElementById("accountingName").innerText = companyDetails.accounting.name;
+        document.getElementById("accountingPhone").innerText = companyDetails.accounting.phone;
+        document.getElementById("accountingEmail").innerText = companyDetails.accounting.email;
+        document.getElementById("creditLimit").innerText = companyDetails.creditLimit;
+    }
+
+    function closeSidebar() {
+        document.getElementById("sidebar").classList.add("hidden");
+    }
+</script>
+
+<div class="w-full h-screen overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-300 rounded-md">
+        <thead>
+            <tr>
+                <th class="px-4 py-3 border-b border-gray-300 text-left text-xs leading-4 font-medium text-gray-700 uppercase tracking-wider">Company Name</th>
+                <th class="px-4 py-3 border-b border-gray-300 text-left text-xs leading-4 font-medium text-gray-700 uppercase tracking-wider">Company Code</th>
+                <th class="px-4 py-3 border-b border-gray-300 text-left text-xs leading-4 font-medium text-gray-700 uppercase tracking-wider">Portal Access</th>
+                <th class="px-4 py-3 border-b border-gray-300 text-left text-xs leading-4 font-medium text-gray-700 uppercase tracking-wider">Active Users</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr onclick="openSidebar({ name: 'ABC Corporation', contact: { name: 'John Doe', email: 'jdoe@abc.com', phone: '123-456-7890' }, address: '123 Main St, City, State, 12345', taxId: '123456789', accounting: { name: 'Jane Smith', phone: '987-654-3210', email: 'jsmith@abc.com' }, creditLimit: '10000' })">
+                <td class="px-4 py-3 text-sm font-medium text-gray-900">ABC Corporation</td>
+                <td class="px-4 py-3 text-sm text-gray-500">ABC123</td>
+                <td class="px-4 py-3 text-sm text-gray-500">Yes</td>
+                <td class="px-4 py-3 text-sm text-gray-500">50</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-3 text-sm font-medium text-gray-900">XYZ Industries</td>
+                <td class="px-4 py-3 text-sm text-gray-500">XYZ456</td>
+                <td class="px-4 py-3 text-sm text-gray-500">No</td>
+                <td class="px-4 py-3 text-sm text-gray-500">0</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-3 text-sm font-medium text-gray-900">LMN Ltd.</td>
+                <td class="px-4 py-3 text-sm text-gray-500">LMN789</td>
+                <td class="px-4 py-3 text-sm text-gray-500">Yes</td>
+                <td class="px-4 py-3 text-sm text-gray-500">100</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-3 text-sm font-medium text-gray-900">DEF Group</td>
+                <td class="px-4 py-3 text-sm text-gray-500">DEF111</td>
+                <td class="px-4 py-3 text-sm text-gray-500">Yes</td>
+                <td class="px-4 py-3 text-sm text-gray-500">75</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="sidebar" class="fixed top-0 right-0 w-3/4 h-full bg-gray-100 shadow border p-6 overflow-y-auto hidden">
+    <button class="bg-gray-600 text-white px-4 py-2 rounded-md mb-6" onclick="closeSidebar()">Close</button>
+
+    <div class="flex space-x-2 mb-4">
+        <button onclick="showTab('details')" class="bg-gray-300 text-black px-4 py-2 rounded-md">Details</button>
+        <button onclick="showTab('people')" class="bg-gray-300 text-black px-4 py-2 rounded-md">People</button>
+        <button onclick="showTab('services')" class="bg-gray-300 text-black px-4 py-2 rounded-md">Services</button>
+        <button onclick="showTab('addresses')" class="bg-gray-300 text-black px-4 py-2 rounded-md">Addresses</button>
+        <button onclick="showTab('accounting')" class="bg-gray-300 text-black px-4 py-2 rounded-md">Accounting</button>
+        <button onclick="showTab('accessorials')" class="bg-gray-300 text-black px-4 py-2 rounded-md">Accessorials</button>
+        <button onclick="showTab('commodities')" class="bg-gray-300 text-black px-4 py-2 rounded-md">Commodities</button>
+    </div>
+    <div id="details" class="space-y-4">
+        <div class="flex justify-between">
+            <p class="font-semibold">Credit Balance:</p>
+            <p>$ 825.00</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="font-semibold">Credit Limit:</p>
+            <p>$ 0.00</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="font-semibold">Name:</p>
+            <p>360 Digital Inc</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="font-semibold">Short Code:</p>
+            <p>360D</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="font-semibold">External ID:</p>
+            <p>253</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="font-semibold">Is active:</p>
+            <p>Yes</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="font-semibold">Require dimensions:</p>
+            <p>Yes</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="font-semibold">Has portal access:</p>
+            <p>Yes</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="font-semibold">Share live location & ETA:</p>
+            <p>No</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="font-semibold">Address 1:</p>
+            <p>262 Tubeway Drive</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="font-semibold">City:</p>
+            <p>Carol Stream</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="font-semibold">State:</p>
+            <p>Illinois (US)</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="font-semibold">Postal:</p>
+            <p>60188</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="font-semibold">Country:</p>
+            <p>USA</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="font-semibold">Latitude:</p>
+            <p>41.9053535</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="font-semibold">Longitude:</p>
+            <p>-87.9406033</p>
+        </div>
+        <!-- Add more fields here as needed -->
+    </div>
+    
+</div>
+
+{% endblock %}

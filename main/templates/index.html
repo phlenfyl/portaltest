@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="top" class="relative bg-white overflow-hidden">
+    <div class="max-w-screen-xl bg-white mx-auto ">
+
+        <div class="relative z-10 bg-gray-100 lg:max-w-2xl lg:w-full">
+            <svg xmlns="" class="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-indigo-200 transform translate-x-1/2" fill="currentColor" viewbox="0 0 100 100" preserveaspectratio="none">
+                <polygon points="50,0 100,0 50,100 0,100"></polygon>
+            </svg>
+
+
+
+
+            <main xmlns="" class="pt-10 bg-white  mx-auto max-w-screen-xl px-4 sm:pt-12 sm:px-6 md:pt-16 lg:pt-20 lg:px-0 xl:pt-36">
+                
+                <h1 class="text-black font-bold text-5xl"> 357 Portal</h1>
+                 
+                <p class="mt-8  text-xl text-black">We Listen, Then Execute.</p>
+                <div class="mt-10 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                   <div class="rounded-md">
+                    {% if user.is_authenticated%}
+                       <a href="{% url 'login' %}" class="w-full flex items-center justify-center px-8 mb-36 border border-transparent text-base leading-6 font-medium text-white bg-indigo-500 hover:bg-indigo-500 focus:outline-none focus:border-red-700 focus:shadow-outline-blue transition duration-150 ease-in-out md:py-2 md:px-8">
+                          Login
+                       </a>
+                    {% else %}
+                    <a href="{% url 'register' %}" class="w-full flex items-center justify-center px-8 mb-36 border border-transparent text-base leading-6 font-medium text-white bg-indigo-500 hover:bg-indigo-500 focus:outline-none focus:border-red-700 focus:shadow-outline-blue transition duration-150 ease-in-out md:py-2 md:px-8">
+                       Shipper Registration
+                     </a>
+                     {% endif %}
+                   </div>
+                 </div>
+            </main>
+        </div>
+    </div>
+
+
+    <img class="lg:absolute lg:inset-y-0 lg:right-0 h-full bg-indigo-500 object-cover" src="https://i.imgur.com/nygkpPg.png" />
+
+</div>
+
+{% endblock %}

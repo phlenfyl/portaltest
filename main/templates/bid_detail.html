@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+  <div class="max-w-4xl mx-auto py-12">
+    <h1 class="text-3xl font-bold mb-4">Bid Details</h1>
+    <div class="border rounded-lg p-6 mb-8">
+      <p class="text-lg font-medium mb-4">Price: ${{ bid.price }}</p>
+      <p class="text-lg font-medium mb-4">Carrier: {{ bid.carrier.company }}</p>
+      {% if bid.accepted %}
+        <p class="text-lg font-medium mb-4 text-green-600">Accepted</p>
+      {% endif %}
+      <form method="POST" class="mt-4">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Accept Bid</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

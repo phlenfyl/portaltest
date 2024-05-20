@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% load tailwind_filters %}
+
+<div class="bg-white w-full lg:w-[60%] p-4">
+  <div class="border-b border-neutral-100 pb-2">
+    <h3 class="text-2xl font-semibold pl-5 text-center">Orders details</h3>
+  </div>
+  <div class="bg-[#ECFDF3] bg-opacity-40 w-[95%] grid grid-cols-3 mt-5 p-4 gap-4 mx-auto">
+    <div class="text-center">
+      <h3 class="text-base md:text-lg font-semibold">Ordered</h3>
+      <p class="text-xs sm:text-sm md:text-base text-neutral-500">
+        {{orderDetail.order_webhook.first.OrderDate|date:"F d, Y H:i"}}
+      </p>
+    </div>
+    <div class="text-center">
+      <h3 class="text-base md:text-lg font-semibold">Picked Up</h3>
+      <p class="text-xs sm:text-sm md:text-base text-neutral-500">
+        {{orderDetail.order_webhook.first.PickedUp|date:"F d, Y H:i"}}
+      </p>
+    </div>
+    <div class="text-center">
+      {% if orderDetail.deliverystatus != 'attempted'%}
+      <h3 class="text-base md:text-lg font-semibold">Delivered</h3>
+      <p class="text-xs sm:text-sm md:text-base text-neutral-500">
+        {{orderDetail.delivery|date:"F d, Y H:i"}}
+      </p>
+      {% else %}
+      <h3 class="text-base md:text-lg font-semibold">Attempted Delivery</h3>
+      <p class="text-xs sm:text-sm md:text-base text-neutral-500">
+        {{orderDetail.delivery|date:"F d, Y H:i"}}
+      </p>
+      {% endif %}
+    </div>
+  </div>
+  <div class="grid grid-cols-3 mt-5 p-4 gap-4 border-b border-neutral-100 pb-2">
+    <div class="text-center">
+      <h3 class="text-sm text-neutral-700 pb-1">Order ID</h3>
+      <p class="text-sm text-neutral-500">{{orderDetail.externalid|default:""}}</p>
+    </div>
+    <div class="text-center">
+      <h3 class="text-sm text-neutral-700 pb-1">Delivery Status</h3>
+      <div class="flex items-center gap-2 w-full w-max p-1 px-2">
+        <div class="m-auto">
+          <h4 class="text-sm text-neutral-500">{{orderDetail.deliverystatus|default:""}}</h4>
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <h3 class="text-sm text-neutral-700 pb-1">Delivered Date</h3>
+      <p class="text-sm text-neutral-500">{{orderDetail.delivery|default:""}}</p>
+    </div>
+  </div>
+  <div class="grid grid-cols-3 mt-5 p-4 gap-4 border-b border-neutral-100 pb-2">
+    <div class="text-center">
+      <h3 class="text-sm text-neutral-700 pb-1">Status Code</h3>
+      {{orderDetail.statuscode|default:""}}
+    </div>
+    <div class="text-center">
+      <h3 class="text-sm text-neutral-700 pb-1">Account</h3>
+      <p class="text-sm text-neutral-700 font-semibold">{{orderDetail.user.company_name|default:""}}</p>
+      <p class="text-sm text-neutral-500">{{orderDetail.user.company_address|default:""}}</p>
+    </div>
+    <div class="text-center">
+      <h3 class="text-sm text-neutral-700 pb-1">Piece and Weight</h3>
+      <p class="text-sm text-neutral-500">{{orderDetail.order_webhook.first.Pieces|default:""}} @ {{orderDetail.order_webhook.first.Weight|default:""}} lbs</p>
+    </div>
+  </div>
+  <div class="grid grid-cols-3 mt-5 p-4 gap-4 border-b border-neutral-100 pb-2" >
+    <div class="text-center">
+      <h3 class="text-sm text-neutral-700 pb-1">Customer Name</h3>
+      <p class="text-sm text-neutral-700 font-semibold">{{orderDetail.customername|default:""}}</p>
+    </div>
+    <div class="text-center">
+      <h3 class="text-sm text-neutral-700 pb-1">Customer Phone</h3>
+      <p class="text-sm text-neutral-700 font-semibold">{{orderDetail.customerphone|default:""}}</p>
+    </div>
+
+    <div class="text-center">
+      <h3 class="text-sm text-neutral-700 pb-1">Customer Address</h3>
+      <p class="text-sm text-neutral-700 font-semibold">
+        {{orderDetail.customeraddress|default:""}}
+      </p>
+    </div>
+  </div>
+  <div class="grid grid-cols-3 mt-5 p-4 gap-4 border-b border-neutral-100 pb-2">
+    <div class="text-center">
+      <h3 class="text-sm text-neutral-700 pb-1">Customer City</h3>
+      <p class="text-sm text-neutral-500">{{orderDetail.customercity|default:""}}</p>
+    </div>
+    <div class="text-center">
+      <h3 class="text-sm text-neutral-700 pb-1">Customer State</h3>
+      <p class="text-sm text-neutral-500">{{orderDetail.customerstate|default:""}}</p>
+    </div>
+
+    <div class="text-center">
+      <h3 class="text-sm text-neutral-700 pb-1">Customer ZIP</h3>
+      <p class="text-sm text-neutral-500">{{orderDetail.customerzip|default:""}}</p>
+    </div>
+  </div>
+  <div class="grid grid-cols-[70%30%] mt-5 p-4 gap-4 border-b border-neutral-100 py-3">
+    <div class="">
+      <h3 class="text-sm text-neutral-700 pb-2">Comment</h3>
+
+      <p class="text-sm text-neutral-500">
+        {{orderDetail.podcomments|default:""}}
+      </p>
+    </div>
+    <div class=""></div>
+  </div>
+  <div class="grid grid-cols-2 mt-5 p-4 gap-4 border-b border-neutral-100 py-3">
+    <div class="">
+      <h3 class="text-sm text-neutral-700 pb-2">Proof of Delivery</h3>
+
+      <p class="text-sm text-neutral-500">{{orderDetail.podname|default:""}}</p>
+    </div>
+    <div class="">
+      <h3 class="text-sm text-neutral-700 pb-2">Signature</h3>
+      <div class="flex items-center gap-2">
+        {{orderDetail.signature|default:""}}
+        <img
+          src="{% static 'assets/download-02.svg' %}"
+          alt=""
+          class="cursor-pointer"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 2xl:w-[80%] place-items-center m-auto items-start mt-5 p-4 gap-4 border-b border-neutral-100 py-3">
+      {% if orderDetail.imageid %}
+        <div class="w-full rounded-md relative col-span-1">
+          <img
+            src="{% url 'confirmation_image' orderDetail.id %}"
+            alt="{{orderDetail.podname}}-image"
+            class="w-full h-full object-cover rounded-md"
+          />
+          <a
+            href="{% url 'confirmation_image' orderDetail.id %}"
+            download
+            class="absolute bottom-3 right-6 rounded-md p-1 bg-blue-600 w-[24px] h-[24px] cursor-pointer"
+          >
+            <img
+              src="{% static 'assets/download-white.svg' %}"
+              alt=""
+              class="w-full h-full object-contain"
+            />
+          </a>
+        </div>
+      {% endif %}
+      {% if latitude and longitude %}
+        <div class="rounded-md col-span-2 w-full">
+          <iframe
+            src="https://www.google.com/maps/embed/v1/place?key={{ key }}&q={{ latitude }},{{ longitude }}&zoom=14"
+            width="100%"
+            height="500px"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+     {% endif %}
+    </div>
+
+</div>
+{% endblock %}
+

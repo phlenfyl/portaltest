@@ -1,0 +1,180 @@
+{% extends "base_dash.html" %} 
+{% load static %}
+{% load form_tags %}
+{% block content %}
+
+<style>
+  .fixed.open {
+    display: flex;
+  }
+</style>
+
+<div class="">
+
+  <!-- data report -->
+  <h2 class="text-xl font-semibold my-4">Report History</h2>
+
+  <!-- form content -->
+
+  <div class="mt-6">
+    <div class="bg-neutral-50 flex items-center p-5 rounded-md">
+      <form method="GET"  class="w-full xl:w-11/12 3xl:w-5/6" >
+        {% if form.errors %}
+          <div class = "bg-red-400 border border-red-600 w-fit m-auto my-2 p-3 text-white rounded">{{ form.errors }}</div>
+        {% endif %}
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <div class="">
+            <h4 class="mb-2">Status</h4>
+            <div class="p-2 min-h-[45px] w-full flex items-center bg-white gap-4 border border-neutral-200 rounded-md">
+              <div class="rounded-full h-2 w-2 bg-green-500"></div>
+              {{ form.deliverystatus}}
+            </div>
+          </div>
+          <div class="">
+            <h4 class="mb-2">Delivery Date From</h4>
+            <div
+              class="p-2 min-h-[45px] w-full flex items-center bg-white gap-4 border border-neutral-200 rounded-md"
+            >
+              {{ form.start_date|addattrs:"class=w-full focus-within:border-none outline-none bg-transparent"}}
+            </div>
+          </div>
+          <div>
+            <h4 class="mb-2">Delivery Date To</h4>
+            <div class="p-2 min-h-[45px] w-full flex items-center bg-white gap-4 border border-neutral-200 rounded-md">
+              {{ form.end_date|addattrs:"class=w-full focus-within:border-none outline-none bg-transparent"}}
+            </div>
+          </div>
+          <div>
+            <h4 class="mb-2">City</h4>
+            <div
+              class="p-2 min-h-[45px] flex items-center bg-white gap-4 border border-neutral-200 rounded-md"
+            >
+              <img
+                src="{% static 'assets/searchlg-1.svg' %}"
+                alt=""
+                class="w-[20px] h-[20px] object-contain"
+              />
+              {{ form.customercity|addattrs:"class='w-full focus-within:border-none outline-none,placeholder=Select City"}}
+            </div>
+          </div>
+          <div class="">
+            <h4 class="mb-2">State</h4>
+            <div
+              class="p-2 min-h-[45px] flex items-center bg-white gap-4 border border-neutral-200 rounded-md"
+            >
+              <img
+                src="{% static 'assets/searchlg-1.svg' %}"
+                alt=""
+                class="w-[20px] h-[20px] object-contain"
+              />
+                {{ form.customerstate|addattrs:"class=w-full focus-within:border-none outline-none,placeholder=Select State"}}
+            </div>
+          </div>
+        </div>
+        <!-- buttons -->
+        <div class="flex items-center gap-4 mt-4">
+          <button
+            type="submit"
+            class="outline-none border border-neutral-100 px-4 py-2 rounded-md shadow-sm bg-blue-600 text-white font-semibold"
+          >
+            Search
+          </button>
+        </div>
+      </form>
+      <div class="w-0 xl:w-auto"></div>
+    </div>
+  </div>
+  <!-- report history -->
+
+  <div class="mt-5">
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 font-inter"
+    >
+      {% for report in reports %}
+        {% if report.report_filter.start_date %}
+          <div
+            class="w-full border border-neutral-100 shadow-sm rounded-md p-4 flex flex-col gap-4 bg-white"
+          >
+            <div class="flex items-center justify-between">
+              <h3 class="text-neutral-600 text-sm font-semibold">
+                {{report.created_at|date:"F d, Y"}}
+              </h3>
+              <span class="text-blue-600 text-sm font-bold">
+                <a href="{% url "download_report" report.id %}" class="">View Report</a>
+              </span>
+
+            </div>
+            <div class="">
+              <h3 class="text-neutral-500 font-medium text-sm mb-2">
+                Delivery date
+              </h3>
+              <p class="text-sm">{{report.report_filter.start_date|date:"F d, Y"}} - {{report.report_filter.end_date|date:"F d, Y"}}</p>
+            </div>
+
+            <div class="flex items-center gap-14">
+              <div class="">
+                <h3 class="text-sm text-neutral-500 font-medium mb-2">Status</h3>
+                <div
+                  class="flex items-center gap-2 rounded-xl border border-green-500 w-full h-full w-max p-1 px-2 bg-[#ABEFC6] bg-opacity-30"
+                >
+                  <div class="h-2 w-2 rounded-full bg-green-500"></div>
+                  <div class="flex items-center">
+                    <h4 class="text-xs font-medium text-green-700">
+                      {{report.deliverystatus|default:"---"}}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div class="">
+                <h3 class="text-neutral-500 font-medium text-sm mb-2">
+                  State and City
+                </h3>
+                <h4 class="text-sm font-semibold">{{report.report_filter.customercity|default:"---"}}, {{report.report_filter.customerstate|default:"---"}}</h4>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- pagination -->
+  {% if reports %}
+  <div class="w-full my-8 flex items-center justify-between border-t border-neutral-100 pt-2 bg-white">
+    {% if reports.has_previous %}
+    <a href="?page={{ reports.previous_page_number }}" class="flex items-center gap-2 p-2 outline-none border-none shadow-sm text-sm font-medium">
+        <img src="{% static 'assets/arrowleft.svg' %}" alt="" class="w-auto h-4 object-contain" />
+        <span class="text-sm">Previous</span>
+    </a>
+    {% else %}
+    <span class="flex items-center gap-2 p-2 outline-none border-none shadow-sm text-sm font-medium text-neutral-300">
+        <img src="{% static 'assets/arrowleft.svg' %}" alt="" class="w-auto h-4 object-contain" />
+        <span class="text-sm">Previous</span>
+    </span>
+    {% endif %}
+
+    <div class="flex items-center gap-2">
+        {% for num in reports.paginator.page_range %}
+            {% if reports.number == num %}
+                <span class="outline-none border-none h-4 w-4 text-xs md:h-6 md:w-6 bg-neutral-200 rounded-md p-2 flex items-center justify-center">{{ num }}</span>
+            {% elif num >= reports.number|add:'-3' and num <= reports.number|add:'3' %}
+                <a href="?page={{ num }}" class="outline-none border-none h-4 w-4 text-xs md:h-6 md:w-6 rounded-md p-2 flex items-center justify-center">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    {% if reports.has_next %}
+    <a href="?page={{ reports.next_page_number }}" class="flex items-center gap-2 p-2 outline-none border-none shadow-sm text-sm font-medium">
+        <span class="text-sm">Next</span>
+        <img src="{% static 'assets/arrowright.svg' %}" alt="" class="w-auto h-4 object-contain" />
+    </a>
+    {% else %}
+    <span class="flex items-center gap-2 p-2 outline-none border-none shadow-sm text-sm font-medium text-neutral-300">
+        <span class="text-sm">Next</span>
+        <img src="{% static 'assets/arrowright.svg' %}" alt="" class="w-auto h-4 object-contain" />
+    </span>
+    {% endif %}
+  </div>
+{% endif %}
+</div>
+{% endblock content %}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#updateCarrierForm').submit(function(e) {
+            e.preventDefault();
+            $('#custom-popup').show();
+        });
+    
+        $('#btnYes').click(function() {
+            $('#custom-popup').hide();
+            $('#id_update').val('False');
+            $('#id_skip_signal').val('False');
+            $('#updateCarrierForm').off('submit').submit();
+        });
+    
+        $('#btnNo').click(function() {
+            $('#custom-popup').hide();
+            $('#id_update').val('True');
+            $('#updateCarrierForm').off('submit').submit();
+        });
+    });
+</script>
+<style>
+    .popup-hidden {
+        display: none;
+    }
+    #custom-popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        z-index: 100;
+    }
+    
+</style>
+<div id="custom-popup" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-6 mx-auto bg-white rounded shadow-lg max-w-sm m-6 text-center popup-hidden">
+    <p class="text-lg mb-4">Do you want to send the contract?</p>
+    <button id="btnYes" class="bg-green-500 text-white rounded py-2 px-4 mr-2 hover:bg-green-400 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-50">
+        Yes
+    </button>
+    <button id="btnNo" class="bg-red-500 text-white rounded py-2 px-4 hover:bg-red-400 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50">
+        No
+    </button>
+</div>
+
+<div class="container mx-auto mt-20">
+    <h2 class="text-2xl font-semibold mb-6">Update Carrier</h2>
+    <div class="bg-white p-6 rounded shadow-lg w-full md:w-3/4 lg:w-full mx-auto">
+        <form method="post" class="space-y-4 grid grid-cols-1 md:grid-cols-2 md:gap-x-8" id="updateCarrierForm">
+            {% csrf_token %}
+
+            {{ form.non_field_errors }}
+            {% for field in form %}
+            <div class="space-y-2 col-span-1">
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-600">{{ field.label }}</label>
+
+                <div class="mt-1">
+                    {{ field }}
+                </div>
+                {% if field.errors %}
+                    <div class="text-red-600 text-sm">{{ field.errors|first }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div class="col-span-2">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md">
+                    Update
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+

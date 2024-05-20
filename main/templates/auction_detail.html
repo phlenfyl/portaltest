@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+{% load humanize %}
+
+<div class="mx-5 sm:w-1/3 mt-5 overflow-x-auto border sm:mx-auto shadow-md rounded-2xl">
+    <div class="flex justify-center">
+        <a href="{% url 'auction-list' %}" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-6">
+          Go to Auction Dashboard
+        </a>
+      </div>
+      
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+
+        <tbody>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Company:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ auction.quote.account.company }}
+                </td>
+            
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Service:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ auction.quote.service }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Commodity:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ auction.quote.commodity }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Weight:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ auction.quote.weight }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Dimensions:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ auction.quote.dimensions }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Quantity:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ auction.quote.quantity }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Pieces:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ auction.quote.pieces }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Pickup:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ auction.quote.pickup }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Dropoff:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ auction.quote.dropoff }}
+                </td>
+
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Travel Time:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                    {{ auction.quote.traveltime }}
+                </td>
+
+            </tr>
+
+            {% if auction.quote.hempinsurance %}
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Insured Value:
+                </th>
+                <td class="px-6 py-2 text-xs sm:text-base">
+                   ${{ auction.quote.hempinsurance|intcomma }}
+                </td>
+
+            </tr>
+
+            {% comment %} <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Hemp Insurance:
+                </th>
+                <td class="px-6 py-2">
+                    {% if isover == False %}
+                   <strike> ${{ before }} </strike>  $0
+                   {% else %}
+                   <strike> ${{ before }} </strike> ${{ after }}
+                   {% endif %}
+                </td>
+
+            </tr> {% endcomment %}
+
+            {% endif %}
+
+        </tbody>
+    </table>
+</div>
+
+<h3 class="text-center text-2xl text-black font-bold"> Cost: ${{ auction.quote.cost }}</h3>
+
+
+<div class="container mx-auto px-4 py-8">
+{% if auction.complete %}
+  <div class="bg-green-200 text-green-700 p-4 rounded mb-8">
+    <p class="font-bold mb-2">This auction is complete!</p>
+    <p>All bids have been received and the carrier has been emailed. Winner:
+        {% for bid in auction.bids.all %}
+        {% if bid.accepted %}
+            {{ bid.carrier.company }}, {{ bid.carrier.email }}
+        {% endif %}
+    {% endfor %}
+
+    </p>
+  </div>
+  {% endif %}
+  <table class="w-full">
+    <thead>
+      <tr>
+        <th class="text-left text-gray-700 font-bold uppercase px-4 py-2">#</th>
+        <th class="text-left text-gray-700 font-bold uppercase px-4 py-2">Carrier</th>
+        <th class="text-left text-gray-700 font-bold uppercase px-4 py-2">Price</th>
+        <th class="text-left text-gray-700 font-bold uppercase px-4 py-2">Status</th>
+        <th class="text-left text-gray-700 font-bold uppercase px-4 py-2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for bid in auction.bids.all %}
+      <tr>
+        <td class="border px-4 py-2">{{ forloop.counter }}</td>
+        <td class="border px-4 py-2">{{ bid.carrier.company }}</td>
+        <td class="border px-4 py-2">${{ bid.price }}</td>
+        <td class="border px-4 py-2">
+          {% if bid.accepted %}
+          <span class="bg-green-500 text-white py-1 px-2 rounded-full">Accepted</span>
+          {% else %}
+          <span class="bg-red-500 text-white py-1 px-2 rounded-full">Not accepted</span>
+          {% endif %}
+        </td>
+        <td class="border px-4 py-2">
+          {% if not auction.complete %}
+          <a href="{% url 'bid_detail' bid.id %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Accept
+          </a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if auction.complete != true %}
+  <form method="get" action="{% url 'auction-detail' auction.pk %}">
+    <input type="hidden" name="cancel" value="true">
+    <button type="submit">Cancel Auction</button>
+  </form>
+  
+  {% endif %}
+  {% if auction.quote.accepted and auction.complete != True %}
+  <form class="mt-5" method="POST">
+    {% csrf_token %}
+    {{ form | crispy }}
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      Complete Auction
+    </button>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}
+
+
+

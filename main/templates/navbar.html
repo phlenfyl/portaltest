@@ -1,0 +1,52 @@
+{% load static %}
+<div class="">
+  <div class="w-full pt-4 border-b border-neutral-100 pb-4">
+    <div class="flex items-center justify-between">
+      <div class="flex flex-col md:flex-row gap-3">
+        <h2 class="text-3xl font-semibold">Orders</h2>
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button typr = "submit" href = "" class = "px-3 w-[6rem] py-2 bg-blue-500 text-white rounded hover:bg-blue-700 cursor-pointer flex items-center gap-2">
+            Logout
+            <img src = "{% static 'assets/logout.svg' %}" alt = "" class = "w-[20px] h-[20px] object-contain inline-block" />
+          </button>
+        </form>
+      {% endif %}
+      </div>
+      <div class="h-[120px] w-[120px] lg:w-[200px]">
+        <img src="https://i.imgur.com/pwryTIs.png" alt="" class="w-full h-full" />
+      </div>
+    </div>
+  </div>
+  {% with url_name=request.resolver_match.url_name %}
+
+  <div class="flex flex-col gap-4 xl:flex-row mt-6 xl:items-center xl:justify-between">
+    <div class="w-full overflow-x-scroll hide-scroll ">
+      <ul class="w-max rounded-md flex items-center border border-neutral-300">
+        <li class="{% if url_name == 'dashboard' %} text-blue-600 font-bold {% else %} text-neutral-700 {% endif %} text-sm py-2 px-4 border-r font-semibold border-neutral-200 hover:text-blue-600 w-max">
+          <a href="{% url 'dashboard'  %}" class=""> Home </a>
+        </li>
+        <li class="{% if url_name == 'report_history' %} text-blue-600 font-bold {% else %} text-neutral-700 {% endif %} text-sm py-2 px-4 font-semibold border-r border-neutral-200 hover:text-blue-600 w-max">
+          <a href="{% url 'report_history'  %}" class=""> Report History </a>
+        </li>
+        <li class="{% if url_name == 'report_templates' %} text-blue-600 font-bold {% else %} text-neutral-700 {% endif %} text-sm py-2 px-4 font-semibold border-r border-neutral-200 hover:text-blue-600 w-max">
+          <a href="{% url 'report_templates'  %}" class=""> Report Templates </a>
+        </li>
+        <li class="{% if url_name == 'automation' %} text-blue-600 font-bold {% else %} text-neutral-700 {% endif %} text-sm py-2 px-4 font-semibold hover:text-blue-600 w-max">
+          <a href="{% url 'automation'  %}" class=""> Automation </a>
+        </li>
+      </ul>
+    </div>
+    {% if url_name == 'dashboard' %}
+    <form method = "get" class="relative flex items-center gap-4 rounded-md overflow-hidden w-full sm:w-max border border-gray-300">
+      <input id = "searchIDInput" name = "orderID" placeholder = "search by id" type="text" class="p-2 w-full focus-within:border-none outline-none w-48" />
+      <button id = "searchIDBtn" class = "bg-blue-500 absolute h-full right-0 top-0 p-1 px-2 hover:bg-blue-600">
+        <img src="{% static 'assets/searchwhite.svg' %}" alt="" class="w-[20px] h-[20px] object-contain" />
+      </button>
+    </form>
+    {% endif %}
+   
+  </div>
+  {% endwith %}
+</div>

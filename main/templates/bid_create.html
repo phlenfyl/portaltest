@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load humanize %}
+
+
+<div class="bg-opacity-5 bg-center h-full px-8 mx-auto xl:px-0 pt-3" style="background-image:linear-gradient(rgba(243, 244, 465, 0.95), rgba(243, 244, 246, .95)), url(https://i.imgur.com/nGTEuwp.png); background-size: contain;">
+
+
+
+
+
+  <div class="mx-5 sm:w-1/3 overflow-x-auto border sm:mx-auto shadow-md rounded-2xl">
+      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+  
+          <tbody>
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  {% comment %} <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      Company:
+                  </th>
+                  <td class="px-6 py-2 text-xs sm:text-base">
+                      {{ quote.account.company }}
+                  </td> {% endcomment %}
+              
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      Service:
+                  </th>
+                  <td class="px-6 py-2 text-xs sm:text-base">
+                      {{ quote.service }}
+                  </td>
+  
+              </tr>
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      Commodity:
+                  </th>
+                  <td class="px-6 py-2 text-xs sm:text-base">
+                      {{ quote.commodity }}
+                  </td>
+  
+              </tr>
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      Weight:
+                  </th>
+                  <td class="px-6 py-2 text-xs sm:text-base">
+                      {{ quote.weight }}
+                  </td>
+  
+              </tr>
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      Dimensions:
+                  </th>
+                  <td class="px-6 py-2 text-xs sm:text-base">
+                      {{ quote.dimensions }}
+                  </td>
+  
+              </tr>
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      Quantity:
+                  </th>
+                  <td class="px-6 py-2 text-xs sm:text-base">
+                      {{ quote.quantity }}
+                  </td>
+  
+              </tr>
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      Pieces:
+                  </th>
+                  <td class="px-6 py-2 text-xs sm:text-base">
+                      {{ quote.pieces }}
+                  </td>
+  
+              </tr>
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      Pickup:
+                  </th>
+                  <td class="px-6 py-2 text-xs sm:text-base">
+                      {{ quote.pickup }}
+                  </td>
+  
+              </tr>
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      Dropoff:
+                  </th>
+                  <td class="px-6 py-2 text-xs sm:text-base">
+                      {{ quote.dropoff }}
+                  </td>
+  
+              </tr>
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      Travel Time:
+                  </th>
+                  <td class="px-6 py-2 text-xs sm:text-base">
+                      {{ quote.traveltime }}
+                  </td>
+  
+              </tr>
+  
+              {% if quote.hempinsurance %}
+  
+              {% comment %} <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      Insured Value:
+                  </th>
+                  <td class="px-6 py-2 text-xs sm:text-base">
+                     ${{ quote.hempinsurance|intcomma }}
+                  </td>
+  
+              </tr> {% endcomment %}
+  
+              {% comment %} <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" class="px-6 py-2 text-xs sm:text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      Hemp Insurance:
+                  </th>
+                  <td class="px-6 py-2">
+                      {% if isover == False %}
+                     <strike> ${{ before }} </strike>  $0
+                     {% else %}
+                     <strike> ${{ before }} </strike> ${{ after }}
+                     {% endif %}
+                  </td>
+  
+              </tr> {% endcomment %}
+  
+              {% endif %}
+  
+          </tbody>
+      </table>
+  </div>
+  <h1 class="text-2xl font-bold mb-4 sm:w-1/3 mx-auto pt-5">Hello {{ carrier.company }}, submit a bid for this load.</h1>
+  {% if request.GET.success %}
+    <p class="text-green-500 mb-4 text-center">Bid created successfully! You can back to this link at to place another bid. We will email you if you won the load.</p>
+  {% endif %}
+  <form method="post" class="space-y-4 pb-20 sm:w-1/3 mx-auto">
+    {% csrf_token %}
+    <input type="hidden" name="auction" value="{{ auction.id }}">
+    <div class="flex flex-col space-y-2">
+      <label for="carrier" class="font-medium hidden">Carrier:</label>
+      <select name="carrier" class="rounded-lg hidden border-gray-400 py-2 px-3">
+        {% for carrier in carriers %}
+          <option value="{{ carrier.id }}">{{ carrier }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="flex flex-col space-y-2">
+      <label for="price" class="font-medium">Bid (Only enter a number.):</label>
+      <input type="number" name="price" placeholder="1000" class="rounded-lg border-gray-400 py-2 px-3">
+    </div>
+    <div class="flex justify-center">
+      <input type="submit" value="Submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg cursor-pointer">
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+

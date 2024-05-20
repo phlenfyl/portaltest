@@ -1,0 +1,28 @@
+{% extends 'base.html'%}
+{% block content%}
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+        <table class="min-w-full bg-white shadow-md rounded">
+            <thead>
+                <tr class="bg-gray-200 text-gray-600 text-sm leading-normal">
+                    {% for header in data.0 %}
+                        <th class="py-3 px-6 text-left">{{ header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody class="text-gray-600 text-sm font-light">
+                {% for row in data|slice:"1:" %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        {% for cell in row %}
+                            <td class="py-3 px-6 text-left whitespace-nowrap">{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+{% endblock %}
+
+  

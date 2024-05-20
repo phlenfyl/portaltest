@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- HTML structure -->
+<div class="flex flex-col h-full">
+    <div class="bg-gray-100 text-white flex items-center justify-center h-32">
+      <!-- Logo image -->
+      <img src="https://i.imgur.com/O71bFyU.png" alt="My Logo" class="h-32 mr-2">
+      <!-- Logo text -->
+      <span class="text-3xl text-black font-bold">357 Juggernaut</span>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-4 py-5 bg-blue-500">
+      <div class="bg-white shadow-md p-4 rounded-lg w-64 text-center">
+        <div class="text-lg font-medium mb-2">User Count</div>
+        <div class="text-4xl font-bold">{{ usercount }}</div>
+      </div>
+      <div class="bg-white shadow-md p-4 rounded-lg w-64 text-center">
+        <div class="text-lg font-medium mb-2">Carrier Count</div>
+        <div class="text-4xl font-bold">{{ carriercount }}</div>
+      </div>
+      <div class="bg-white shadow-md p-4 rounded-lg w-64 text-center">
+        <div class="text-lg font-medium mb-2">Accepted Quotes</div>
+        <div class="text-4xl font-bold">{{ acceptedquotes }}</div>
+      </div>
+      <div class="bg-white shadow-md p-4 rounded-lg w-64 text-center">
+        <div class="text-lg font-medium mb-2">Quote Revenue</div>
+        <div class="text-4xl font-bold">${{ quoterevenue }}</div>
+      </div>
+      <div class="bg-white shadow-md p-4 rounded-lg w-64 text-center">
+        <div class="text-lg font-medium mb-2">Order Count</div>
+        <div class="text-4xl font-bold">{{ ordercount }}</div>
+      </div>
+    </div>
+    
+
+    
+    <div class="flex-1 p-6 bg-gray-100">
+        <div class="grid grid-cols-2 gap-6">
+          <!-- Dashboard module 1 -->
+          <a href="{% url 'admin:index' %}" class="block bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-lg font-medium mb-4">Django Admin</h2>
+            <!-- Module content here -->
+          </a>
+          <!-- Dashboard module 2 -->
+          <a href="{% url 'carrier_list' %}" class="block bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-lg font-medium mb-4">Carrier Management</h2>
+            <!-- Module content here -->
+          </a>
+      
+          <a href="{% url 'quote_dashboard'%}" class="block bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-lg font-medium mb-4">Quotes</h2>
+            <!-- Module content here -->
+          </a>
+
+          <a href="{% url 'labelgroup_create' %}" class="block bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-lg font-medium mb-4">Label Creation</h2>
+            <!-- Module content here -->
+          </a>
+
+          <a href="{% url 'auction-list' %}" class="block bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-lg font-medium mb-4">Carrier Bidding</h2>
+            <!-- Module content here -->
+          </a>
+
+          <a href="{% url 'carrierfilter'%}" class="block bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-lg font-medium mb-4">Carrier Filter</h2>
+            <!-- Module content here -->
+          </a>
+
+          <a href="{% url 'carrier-group-list'%}" class="block bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-lg font-medium mb-4">Carrier Groups</h2>
+            <!-- Module content here -->
+          </a>
+
+          <a href="{% url 'carrier_upload_csv' %}" class="block bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-lg font-medium mb-4">E-Carrier Check Upload</h2>
+          </a>
+
+
+          <a href="{% url 'uds_upload_csv' %}" class="block bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-lg font-medium mb-4">UDS Order Upload</h2>
+          </a>
+        </div>
+      </div>      
+  </div>
+
+  
+{% endblock %}

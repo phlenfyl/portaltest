@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+<style>
+label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.select-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+select {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  appearance: none;
+}
+
+select:focus {
+  outline: none;
+  border-color: #66afe9;
+  box-shadow: 0 0 0 0.2rem rgba(102, 175, 233, 0.5);
+}
+</style>
+
+
+<style>
+  .tooltip {
+      visibility: hidden;
+      background-color: black;
+      color: #fff;
+      text-align: center;
+      border-radius: 5px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 100%; /* Position the tooltip above the text */
+      left: 50%;
+      margin-left: -60px; /* Half of the tooltip's width to center it */
+      opacity: 0;
+      transition: opacity 0.2s;
+  }
+  
+  .tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%; /* Position arrow at the bottom of tooltip */
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: black transparent transparent transparent;
+  }
+  
+  .hoverable:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
+  }
+
+  .active {
+      border: 5px solid #bdbdbd;  /* You can adjust the color and border width */
+      box-sizing: border-box;
+  }
+
+
+
+  
+  
+</style>
+
+
+
+
+
+
+
+
+
+<div class="bg-gray-100 p-4 rounded-lg px-20">
+  <form method="GET" id="my-form" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-8 gap-1">
+    {% csrf_token %}
+    <div class="form-group">
+      {{ filter.form.company|as_crispy_field }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.email|as_crispy_field }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.contact|as_crispy_field }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.mobilephone|as_crispy_field }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.fax|as_crispy_field }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.mcnumber|as_crispy_field }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.usdotnumber|as_crispy_field }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.sprinterqty|as_crispy_field }}
+    </div>
+
+    <div class="form-group">
+      {{ filter.form.straughttruckqty|as_crispy_field }}
+    </div>
+    
+    <div class="form-group">
+      {{ filter.form.dryvanqty|as_crispy_field }}
+    </div>
+    
+    <div class="form-group">
+      {{ filter.form.reeferqty|as_crispy_field }}
+    </div>
+    
+    <div class="form-group">
+      {{ filter.form.flatbedqty|as_crispy_field }}
+    </div>
+
+    <div class="form-group">
+      {{ filter.form.automobileqty|as_crispy_field }}
+    </div>
+    
+    <div class="form-group">
+      {{ filter.form.highcubedqty|as_crispy_field }}
+    </div>
+    
+
+    
+    <div class="form-group">
+      {{ filter.form.warehousesqft|as_crispy_field }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.hazmat.label_tag }}
+      {{ filter.form.hazmat }}
+    </div>
+
+    <div class="form-group">
+      {{ filter.form.smartway.label_tag }}
+      {{ filter.form.smartway }}
+    </div>
+
+    <div class="form-group">
+      {{ filter.form.ltl.label_tag }}
+      {{ filter.form.ltl }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.ftl.label_tag }}
+      {{ filter.form.ftl }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.lastmile.label_tag }}
+      {{ filter.form.lastmile }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.middlemile.label_tag }}
+      {{ filter.form.middlemile }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.transloading.label_tag }}
+      {{ filter.form.transloading }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.airfreight.label_tag }}
+      {{ filter.form.airfreight }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.flatbeds.label_tag }}
+      {{ filter.form.flatbeds }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.otr.label_tag }}
+      {{ filter.form.otr }}
+    </div>
+    <div class="form-group">
+      {{ filter.form.refrigerated.label_tag }}
+      {{ filter.form.refrigerated }}
+    </div>
+
+    <div class="form-group">
+      {{ filter.form.hotshots.label_tag }}
+      {{ filter.form.hotshots }}
+    </div>
+    
+    <div class="form-group">
+      {{ filter.form.whiteglove.label_tag }}
+      {{ filter.form.whiteglove }}
+    </div>
+    
+    <div class="form-group">
+      {{ filter.form.residential.label_tag }}
+      {{ filter.form.residential }}
+    </div>
+    
+    <div class="form-group">
+      {{ filter.form.insidedelivery.label_tag }}
+      {{ filter.form.insidedelivery }}
+    </div>
+    
+    <div class="form-group">
+      {{ filter.form.hemp.label_tag }}
+      {{ filter.form.hemp }}
+    </div>
+
+    <div class="form-group">
+      {{ filter.form.tsa.label_tag }}
+      {{ filter.form.tsa }}
+    </div>
+    
+    <div class="form-group">
+      {{ filter.form.b2b.label_tag }}
+      {{ filter.form.b2b }}
+    </div>
+    
+
+    <div class="form-group">
+      <label for="{{ filter.form.localpickupanddelivery.id_for_label }}">Loc Pic and Del</label>
+      {{ filter.form.localpickupanddelivery }}
+    </div>
+    
+    <div class="form-group">
+      {{ filter.form.expedited.label_tag }}
+      {{ filter.form.expedited }}
+    </div>
+    
+    <div class="form-group">
+      {{ filter.form.highvalue.label_tag }}
+      {{ filter.form.highvalue }}
+    </div>
+    
+    <div class="form-group">
+      {{ filter.form.drayage.label_tag }}
+      {{ filter.form.drayage }}
+    </div>
+
+    <div class="form-group">
+      {{ filter.form.medical.label_tag }}
+      {{ filter.form.medical }}
+    </div>
+
+    <div class="form-group">
+      {{ filter.form.airport.label_tag }}
+      {{ filter.form.airport }}
+    </div>
+
+    <div class="form-group">
+      {{ filter.form.group.label_tag }}
+      {{ filter.form.group}}
+    </div>
+
+      <div class="form-group">
+      {{ filter.form.contractsigned.label_tag }}
+      {{ filter.form.contractsigned }}
+    </div>
+
+    <div class="form-group col-span-2">
+      {{ filter.form.usservice|as_crispy_field }}
+    </div>
+        
+    <div class="form-group col-span-2">
+      {{ filter.form.canservice|as_crispy_field }}
+    </div>
+        
+    <div class="form-group col-span-2">
+      {{ filter.form.mexservice|as_crispy_field }}
+    </div>
+
+    <div class="form-group">
+      {{ filter.form.courier.label_tag }}
+      {{ filter.form.courier }}
+    </div>
+
+    
+  </form>
+
+  <button type="button" id="my-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    Search
+  </button>
+
+
+</div>
+
+  
+<section class="px-20">
+<h1 class="text-3xl font-semibold mt-8">Carriers</h1>
+
+{% if email_url %}
+    <a href="{{ email_url }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 inline-block">Create Auction</a>
+{% endif %}
+
+<table class="table-auto w-full">
+  <thead>
+      <tr>
+          <th class="px-4 py-2 font-bold bg-gray-200">Company</th>
+          <th class="px-4 py-2 font-bold bg-gray-200">Email</th>
+          <th class="px-4 py-2 font-bold bg-gray-200">Phone</th>
+          <th class="px-4 py-2 font-bold bg-gray-200">Contact</th>
+          <th class="px-4 py-2 font-bold bg-gray-200">City</th>
+          <th class="px-4 py-2 font-bold bg-gray-200">State</th>
+          <th class="px-4 py-2 font-bold bg-gray-200">MC Number</th>
+          <th class="px-4 py-2 font-bold bg-gray-200">USDOT Number</th>
+          <th class="px-4 py-2 font-bold bg-gray-200">Status</th>
+          <th class="px-4 py-2 font-bold bg-gray-200">Follow Up</th>
+      </tr>
+  </thead>
+  <tbody>
+    {% for carrier in filter.qs %}
+    {% if forloop.counter|divisibleby:2 %}
+    <tr class="bg-gray-100 hover:bg-gray-300 transition-all duration-150">
+    {% else %}
+    <tr class="bg-white hover:bg-gray-300 transition-all duration-150">
+    {% endif %}
+        <td class="px-4 py-2 underline text-blue-500">
+            <div class="hoverable" style="position: relative; display: inline-block;">
+                <a href="{% url 'carrier-detail' pk=carrier.pk %}">{{ carrier.company }}</a>
+                <span class="tooltip">Missing fields: {{ carrier.missing_fields }}</span>
+            </div>                
+        </td>
+        <td class="px-4 py-2">{{ carrier.email }}</td>
+        <td class="px-4 py-2">{{ carrier.mobilephone }}</td>
+        <td class="px-4 py-2">{{ carrier.contact }}</td>
+        <td class="px-4 py-2">{{ carrier.address.locality.name }}</td>
+        <td class="px-4 py-2">{{ carrier.address.locality.state.name }}</td>
+        <td class="px-4 py-2">{{ carrier.mcnumber }}</td>
+        <td class="px-4 py-2">{{ carrier.usdotnumber }}</td>
+        <td class="px-4 py-2">{{ carrier.status }}</td>
+        <td class="px-4 py-2"><a href="https://portal.357company.com/carrier/{{ carrier.id }}/followup/" class="text-blue-500 underline">Follow Up</a></td>
+    </tr>
+{% empty %}
+    <tr>
+        <td class="px-4 py-2" colspan="8">None found.</td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+</section>
+
+<script>
+  document.getElementById('my-button').addEventListener('click', function() {
+    document.getElementById('my-form').submit();
+  });
+</script>
+
+<script>
+
+  const currentFilter = new URLSearchParams(window.location.search).get('filter');
+  if (currentFilter) {
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(button => {
+          const href = button.parentElement.getAttribute('href');
+          if (href && href.includes(currentFilter)) {
+              button.classList.add('active');
+          } else {
+              button.classList.remove('active');
+          }
+      });
+  }
+  
+</script>
+
+{% endblock %}
+
+
+

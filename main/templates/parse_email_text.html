@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load tailwind_filters %}
+
+{% block content %}
+  <div class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold mb-6">Paste Email Text</h2>
+    <form method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      {% csrf_token %}
+      {{ form|crispy}}
+      <div class="flex items-center justify-center mt-4">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Parse Email
+        </button>
+      </div>
+    </form>
+  </div>
+{% endblock %}

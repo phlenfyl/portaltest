@@ -1,0 +1,607 @@
+{% extends 'base.html' %}
+
+{% load custom_filters %}
+{% block content %}
+<div class="max-w-full px-10 mx-auto my-10">
+  <h2 class="text-xl font-bold mb-4">Navigation</h2>
+  <p><a class="text-blue-500 py-2" href="{% url 'carrier_update' object.pk %}">Edit Carrier</a></p>
+  <p><a class="text-blue-500 py-2" href="{% url 'carrier_list' %}">Back to Carrier Management</a></p>
+  <p><a class="text-blue-500 py-2" href="{% url 'carrierfilter' %}">Back to Carrier Filter</a></p>
+
+  <p><strong>Groups:</strong> {% for group in object.group.all %} {{ group.name}},{% endfor %} </p>
+  <h1 class="text-3xl font-bold mb-8">Carrier Details: {{ object.company }}</h1>
+
+  <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="px-4 py-6 sm:px-0">
+        <div class="border-4 border-dashed border-gray-200 rounded-lg">
+            <h1 class="text-2xl font-bold mb-2">Carrier: {{ object.company }}</h1>
+            <h1 class="text-xl"> {% if object.courier %}COURIER{% endif %}</h1>
+
+            <table class="min-w-full bg-white">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 border">Field</th>
+                        <th class="py-2 px-4 border">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- ... Other table rows ... -->
+                  
+                    <!-- Company -->
+                    <tr>
+                      <td class="py-2 px-4 border">Company</td>
+                      <td class="py-2 px-4 border">{{ object.company }}</td>
+                    </tr>
+                  
+                    <!-- Email -->
+                    <tr>
+                      <td class="py-2 px-4 border">Email</td>
+                      <td class="py-2 px-4 border">{{ object.email }}</td>
+                    </tr>
+                  
+                    <!-- Contact Name -->
+                    <tr>
+                      <td class="py-2 px-4 border">Contact Name</td>
+                      <td class="py-2 px-4 border">{{ object.contact }}</td>
+                    </tr>
+                  
+                    <!-- Company Address -->
+                    <tr>
+                      <td class="py-2 px-4 border">Company Address</td>
+                      <td class="py-2 px-4 border">{{ object.address }}</td>
+                    </tr>
+
+                    <!-- SCAC -->
+                    <tr>
+                      <td class="py-2 px-4 border">SCAC</td>
+                      <td class="py-2 px-4 border">{{ object.scac }}</td>
+                    </tr>
+                  
+                  
+                    <!-- Main Phone -->
+                    <tr>
+                      <td class="py-2 px-4 border">Main Phone</td>
+                      <td class="py-2 px-4 border">{{ object.mainphone }}</td>
+                    </tr>
+                  
+                    <!-- Mobile Phone Number -->
+                    <tr>
+                      <td class="py-2 px-4 border">Mobile Phone Number</td>
+                      <td class="py-2 px-4 border">{{ object.mobilephone }}</td>
+                    </tr>
+                  
+                    <!-- Fax -->
+                    <tr>
+                      <td class="py-2 px-4 border">Fax</td>
+                      <td class="py-2 px-4 border">{{ object.fax }}</td>
+                    </tr>
+                  
+                    <!-- MC Number -->
+                    <tr>
+                      <td class="py-2 px-4 border">MC Number</td>
+                      <td class="py-2 px-4 border">{{ object.mcnumber }}</td>
+                    </tr>
+                  
+                    <!-- USDOT Number -->
+                    <tr>
+                      <td class="py-2 px-4 border">USDOT Number</td>
+                      <td class="py-2 px-4 border">{{ object.usdotnumber }}</td>
+                    </tr>
+                  
+                    <!-- FEIN Number -->
+                    <tr>
+                      <td class="py-2 px-4 border">FEIN Number</td>
+                      <td class="py-2 px-4 border">{{ object.feinnumber }}</td>
+                    </tr>
+                  
+                    <!-- Tech Provider -->
+                    <tr>
+                      <td class="py-2 px-4 border">Tech Provider</td>
+                      <td class="py-2 px-4 border">{{ object.techprovider }}</td>
+                    </tr>
+                  
+                    <!-- Tracking Technology -->
+                    <tr>
+                      <td class="py-2 px-4 border">Tracking Technology</td>
+                      <td class="py-2 px-4 border">{{ object.trackingtech }}</td>
+                    </tr>
+                  
+                    <!-- Owner Name -->
+                    <tr>
+                      <td class="py-2 px-4 border">Owner Name</td>
+                      <td class="py-2 px-4 border">{{ object.ownername }}</td>
+                    </tr>
+                  
+                    <!-- Owner Phone Number -->
+                    <tr>
+                      <td class="py-2 px-4 border">Owner Phone Number</td>
+                      <td class="py-2 px-4 border">{{ object.ownerphone }}</td>
+                    </tr>
+                  
+                    <!-- Owner Email -->
+                    <tr>
+                      <td class="py-2 px-4 border">Owner Email</td>
+                      <td class="py-2 px-4 border">{{ object.owneremail }}</td>
+                    </tr>
+                  
+                    <!-- Dispatch Name -->
+                    <tr>
+                      <td class="py-2 px-4 border">Dispatch Name</td>
+                      <td class="py-2 px-4 border">{{ object.dispatchname }}</td>
+                    </tr>
+                  
+                    <!-- Dispatch Phone Number -->
+                    <tr>
+                      <td class="py-2 px-4 border">Dispatch Phone Number</td>
+                      <td class="py-2 px-4 border">{{ object.dispatchphone }}</td>
+                    </tr>
+                  
+                    <!-- Dispatch Email -->
+                    <tr>
+                      <td class="py-2 px-4 border">Dispatch Email</td>
+                      <td class="py-2 px-4 border">{{ object.dispatchemail }}</td>
+                    </tr>
+                  
+                    <!-- Accounting Name -->
+                    <tr>
+                      <td class="py-2 px-4 border">Accounting Name</td>
+                      <td class="py-2 px-4 border">{{ object.accountingname }}</td>
+                    </tr>
+                  
+                    <!-- Accounting Phone Number -->
+                    <tr>
+                      <td class="py-2 px-4 border">Accounting Phone Number</td>
+                      <td class="py-2 px-4 border">{{ object.accountingphone }}</td>
+                    </tr>
+                  
+                    <!-- Accounting Email -->
+                    <tr>
+                      <td class="py-2 px-4 border">Accounting Email</td>
+                      <td class="py-2 px-4 border">{{ object.accountingemail }}</td>
+                    </tr>
+                  
+                    <!-- Hazmat -->
+                    <tr>
+                      <td class="py-2 px-4 border">Hazmat</td>
+                      <td class="py-2 px-4 border">{{ object.hazmat }}</td>
+                    </tr>
+                  
+                    <!-- Smartway -->
+                    <tr>
+                      <td class="py-2 px-4 border">Smartway</td>
+                      <td class="py-2 px-4 border">{{ object.smartway }}</td>
+                    </tr>
+                  
+                    <!-- Less than Load (LTL) -->
+                    <tr>
+                      <td class="py-2 px-4 border">Less than Load (LTL)</td>
+                      <td class="py-2 px-4 border">{{ object.ltl }}</td>
+                    </tr>
+                  
+                    <!-- Full Truckload (FTL) -->
+                    <tr>
+                      <td class="py-2 px-4 border">Full Truckload (FTL)</td>
+                      <td class="py-2 px-4 border">{{ object.ftl }}</td>
+                    </tr>
+                  
+                    <!-- B2B -->
+                    <tr>
+                      <td class="py-2 px-4 border">B2B</td>
+                      <td class="py-2 px-4 border">{{ object.b2b }}</td>
+                    </tr>
+                  
+                    <!-- TSA -->
+                    <tr>
+                      <td class="py-2 px-4 border">TSA</td>
+                      <td class="py-2 px-4 border">{{ object.tsa }}</td>
+                    </tr>
+                  
+                    <!-- Last Mile -->
+                    <tr>
+                      <td class="py-2 px-4 border">Last Mile</td>
+                      <td class="py-2 px-4 border">{{ object.lastmile }}</td>
+                    </tr>
+                  
+                    <!-- Middle Mile -->
+                    <tr>
+                      <td class="py-2 px-4 border">Middle Mile</td>
+                      <td class="py-2 px-4 border">{{ object.middlemile }}</td>
+                    </tr>
+                  
+                    <!-- Transloading -->
+                    <tr>
+                      <td class="py-2 px-4 border">Transloading</td>
+                      <td class="py-2 px-4 border">{{ object.transloading }}</td>
+                    </tr>
+                  
+                    <!-- Air Freight -->
+                    <tr>
+                      <td class="py-2 px-4 border">Air Freight</td>
+                      <td class="py-2 px-4 border">{{ object.airfreight }}</td>
+                    </tr>
+                  
+                    <!-- Flat Beds -->
+                    <tr>
+                      <td class="py-2 px-4 border">Flat Beds</td>
+                      <td class="py-2 px-4 border">{{ object.flatbeds }}</td>
+                    </tr>
+                  
+                    <!-- Over The Road (OTR) -->
+                    <tr>
+                      <td class="py-2 px-4 border">Over The Road (OTR)</td>
+                      <td class="py-2 px-4 border">{{ object.otr }}</td>
+                    </tr>
+                  
+                    <!-- Refrigerated -->
+                    <tr>
+                      <td class="py-2 px-4 border">Refrigerated</td>
+                      <td class="py-2 px-4 border">{{ object.refrigerated }}</td>
+                    </tr>
+                  
+                    <!-- Hot Shots -->
+                    <tr>
+                      <td class="py-2 px-4 border">Hot Shots</td>
+                      <td class="py-2 px-4 border">{{ object.hotshots }}</td>
+                    </tr>
+                  
+                    <!-- Local Pick up and Delivery -->
+                    <tr>
+                      <td class="py-2 px-4 border">Local Pick up and Delivery</td>
+                      <td class="py-2 px-4 border">{{ object.localpickupanddelivery }}</td>
+                    </tr>
+                  
+                    <!-- Expedited -->
+                    <tr>
+                      <td class="py-2 px-4 border">Expedited</td>
+                      <td class="py-2 px-4 border">{{ object.expedited }}</td>
+                    </tr>
+                  
+                    <!-- High Value -->
+                    <tr>
+                      <td class="py-2 px-4 border">High Value</td>
+                      <td class="py-2 px-4 border">{{ object.highvalue }}</td>
+                    </tr>
+                  
+                    <!-- Drayage -->
+                    <tr>
+                      <td class="py-2 px-4 border">Drayage</td>
+                      <td class="py-2 px-4 border">{{ object.drayage }}</td>
+                    </tr>
+                  
+                    <!-- White Glove -->
+                    <tr>
+                      <td class="py-2 px-4 border">White Glove</td>
+                      <td class="py-2 px-4 border">{{ object.whiteglove }}</td>
+                    </tr>
+                  
+                    <!-- Residential -->
+                    <tr>
+                      <td class="py-2 px-4 border">Residential</td>
+                      <td class="py-2 px-4 border">{{ object.residential }}</td>
+                    </tr>
+                  
+                    <!-- Inside Delivery -->
+                    <tr>
+                      <td class="py-2 px-4 border">Inside Delivery</td>
+                      <td class="py-2 px-4 border">{{ object.insidedelivery }}</td>
+                    </tr>
+                  
+                    <!-- Medical -->
+                    <tr>
+                      <td class="py-2 px-4 border">Medical</td>
+                      <td class="py-2 px-4 border">{{ object.medical }}</td>
+                    </tr>
+                  
+                    <!-- Hemp -->
+                    <tr>
+                      <td class="py-2 px-4 border">Hemp</td>
+                      <td class="py-2 px-4 border">{{ object.hemp }}</td>
+                    </tr>
+                  
+                    <!-- Airport Recovery -->
+                    <tr>
+                      <td class="py-2 px-4 border">Airport Recovery</td>
+                      <td class="py-2 px-4 border">{{ object.airport }}</td>
+                    </tr>
+                  
+                    <!-- Last Mile Quantity -->
+                    <tr>
+                      <td class="py-2 px-4 border">Last Mile Quantity</td>
+                      <td class="py-2 px-4 border">{{ object.lastmileqty }}</td>
+                    </tr>
+                  
+                    <!-- TSA Mile Quantity -->
+                    <tr>
+                      <td class="py-2 px-4 border">TSA Mile Quantity</td>
+                      <td class="py-2 px-4 border">{{ object.tsaqty }}</td>
+                    </tr>
+                  
+                    <!-- Automobile Quantity -->
+                    <tr>
+                      <td class="py-2 px-4 border">Automobile Quantity</td>
+                      <td class="py-2 px-4 border">{{ object.automobileqty }}</td>
+                    </tr>
+                  
+                    <!-- High Cubed Quantity -->
+                    <tr>
+                      <td class="py-2 px-4 border">High Cubed Quantity</td>
+                      <td class="py-2 px-4 border">{{ object.highcubedqty }}</td>
+                    </tr>
+                  
+                    <!-- Sprinter Van Quantity -->
+                    <tr>
+                      <td class="py-2 px-4 border">Sprinter Van Quantity</td>
+                      <td class="py-2 px-4 border">{{ object.sprinterqty }}</td>
+                    </tr>
+                  
+                    <!-- Straight Truck Quantity -->
+                    <tr>
+                      <td class="py-2 px-4 border">Straight Truck Quantity</td>
+                      <td class="py-2 px-4 border">{{ object.straughttruckqty }}</td>
+                    </tr>
+                  
+                    <!-- Dry Van Quantity -->
+                    <tr>
+                      <td class="py-2 px-4 border">Dry Van Quantity</td>
+                      <td class="py-2 px-4 border">{{ object.dryvanqty }}</td>
+                    </tr>
+                  
+                    <!-- Refrigerated Trailer Quantity -->
+                    <tr>
+                      <td class="py-2 px-4 border">Refrigerated Trailer Quantity</td>
+                      <td class="py-2 px-4 border">{{ object.reeferqty }}</td>
+                    </tr>
+                  
+                    <!-- Flat Bed Quantity -->
+                    <tr>
+                      <td class="py-2 px-4 border">Flat Bed Quantity</td>
+                      <td class="py-2 px-4 border">{{ object.flatbedqty }}</td>
+                    </tr>
+                  
+                    <!-- Warehouse Square Feet -->
+                    <tr>
+                      <td class="py-2 px-4 border">Warehouse Square Feet</td>
+                      <td class="py-2 px-4 border">{{ object.warehousesqft }}</td>
+                    </tr>
+                  
+                    <!-- Total Truck Quantity -->
+                    <tr>
+                      <td class="py-2 px-4 border">Total Truck Quantity</td>
+                      <td class="py-2 px-4 border">{{ object.totaltruckqty }}</td>
+                    </tr>
+                  
+                    <!-- Is Total Truck Quantity Auto Calculated? -->
+                    <tr>
+                      <td class="py-2 px-4 border">Is Total Truck Quantity Auto Calculated?</td>
+                      <td class="py-2 px-4 border">{{ object.is_totaltruckqty_auto }}</td>
+                    </tr>
+                  
+                    <!-- Induction Facility 1 -->
+                    <tr>
+                      <td class="py-2 px-4 border">Induction Facility 1</td>
+                      <td class="py-2 px-4 border">{{ object.inductionfacilityloc1 }}</td>
+                    </tr>
+                  
+                    <!-- Induction Facility Location 1 Temperature Controlled -->
+                    <tr>
+                      <td class="py-2 px-4 border">Induction Facility Location 1 Temperature Controlled</td>
+                      <td class="py-2 px-4 border">{{ object.inductionfacilityloc1_temp_controlled }}</td>
+                    </tr>
+                  
+                    <!-- Induction Facility 2 -->
+                    <tr>
+                      <td class="py-2 px-4 border">Induction Facility 2</td>
+                      <td class="py-2 px-4 border">{{ object.inductionfacilityloc2 }}</td>
+                    </tr>
+                  
+                    <!-- Induction Facility Location 2 Temperature Controlled -->
+                    <tr>
+                      <td class="py-2 px-4 border">Induction Facility Location 2 Temperature Controlled</td>
+                      <td class="py-2 px-4 border">{{ object.inductionfacilityloc2_temp_controlled }}</td>
+                    </tr>
+                  
+                    <!-- Induction Facility 3 -->
+                    <tr>
+                      <td class="py-2 px-4 border">Induction Facility 3</td>
+                      <td class="py-2 px-4 border">{{ object.inductionfacilityloc3 }}</td>
+                    </tr>
+                  
+                    <!-- Induction Facility Location 3 Temperature Controlled -->
+                    <tr>
+                      <td class="py-2 px-4 border">Induction Facility Location 3 Temperature Controlled</td>
+                      <td class="py-2 px-4 border">{{ object.inductionfacilityloc3_temp_controlled }}</td>
+                    </tr>
+                  
+                    <!-- Induction Facility 4 -->
+                    <tr>
+                      <td class="py-2 px-4 border">Induction Facility 4</td>
+                      <td class="py-2 px-4 border">{{ object.inductionfacilityloc4 }}</td>
+                    </tr>
+                  
+                    <!-- Induction Facility Location 4 Temperature Controlled -->
+                    <tr>
+                      <td class="py-2 px-4 border">Induction Facility Location 4 Temperature Controlled</td>
+                      <td class="py-2 px-4 border">{{ object.inductionfacilityloc4_temp_controlled }}</td>
+                    </tr>
+                  
+                    <!-- Induction Facility 5 -->
+                    <tr>
+                      <td class="py-2 px-4 border">Induction Facility 5</td>
+                      <td class="py-2 px-4 border">{{ object.inductionfacilityloc5 }}</td>
+                    </tr>
+                  
+                    <!-- Induction Facility Location 5 Temperature Controlled -->
+                    <tr>
+                      <td class="py-2 px-4 border">Induction Facility Location 5 Temperature Controlled</td>
+                      <td class="py-2 px-4 border">{{ object.inductionfacilityloc5_temp_controlled }}</td>
+                    </tr>
+                  
+                    <!-- Coverage Radius -->
+                    <tr>
+                      <td class="py-2 px-4 border">Coverage Radius</td>
+                      <td class="py-2 px-4 border">{{ object.coverageradius }}</td>
+                    </tr>
+                  
+                    <!-- Domestic Service -->
+                    <tr>
+                      <td class="py-2 px-4 border">Domestic Service</td>
+                      {% if object.usservice == '[]' %}
+                        <td class="py-2 px-4 border">None</td>
+                      {% else %}
+                        <td class="py-2 px-4 border">{{ object.usservice | remove_brackets }}</td>
+                      {% endif %}
+                    </tr>
+                  
+                    <!-- Canada Service -->
+                    <tr>
+                      <td class="py-2 px-4 border">Canada Service</td>
+                      {% if object.canservice == '[]' %}
+                        <td class="py-2 px-4 border">None</td>
+                      {% else %}
+                        <td class="py-2 px-4 border">{{ object.canservice | remove_brackets }}</td>
+                      {% endif %}
+                    </tr>
+                  
+                    <!-- Mexico Service -->
+                    <tr>
+                      <td class="py-2 px-4 border">Mexico Service</td>
+                      {% if object.mexservice == '[]' %}
+                        <td class="py-2 px-4 border">None</td>
+                      {% else %}
+                        <td class="py-2 px-4 border">{{ object.mexservice | remove_brackets }}</td>
+                      {% endif %}
+                    </tr>
+                  
+                    <tr>
+                      <td class="py-2 px-4 border">W-9</td>
+                      <td class="py-2 px-4 border">
+                        {% if object.w9 %}
+                          <a href="{{ object.w9.url }}" class="underline decoration-sky-500/30 text-blue-800">{{ object.w9 }}</a>
+                        {% else %}
+                          No file available
+                        {% endif %}
+                      </td>
+                    </tr>
+                  
+                    <!-- Insurance Agreement -->
+                    <tr>
+                      <td class="py-2 px-4 border">Insurance Agreement</td>
+                      <td class="py-2 px-4 border">
+                        {% if object.insurance %}
+                          <a href="{{ object.insurance.url }}" class="underline decoration-sky-500/30 text-blue-800">{{ object.insurance }}</a>
+                        {% else %}
+                          No file available
+                        {% endif %}
+                      </td>
+                    </tr>
+                  
+                    <!-- Operating Authority -->
+                    <tr>
+                      <td class="py-2 px-4 border">Operating Authority</td>
+                      <td class="py-2 px-4 border">
+                        {% if object.operatingauth %}
+                          <a href="{{ object.operatingauth.url }}" class="underline decoration-sky-500/30 text-blue-800">{{ object.operatingauth }}</a>
+                        {% else %}
+                          No file available
+                        {% endif %}
+                      </td>
+                    </tr>
+                  
+                    <!-- Zip Code Coverage Area -->
+                    <tr>
+                      <td class="py-2 px-4 border">Zip Code Coverage Area</td>
+                      <td class="py-2 px-4 border">
+                        {% if object.zipcoverage %}
+                          <a href="{{ object.zipcoverage.url }}" class="underline decoration-sky-500/30 text-blue-800">{{ object.zipcoverage }}</a>
+                        {% else %}
+                          No file available
+                        {% endif %}
+                      </td>
+                    </tr>
+                  
+                    <!-- Carrier Broker -->
+                    <tr>
+                      <td class="py-2 px-4 border">Carrier Broker</td>
+                      <td class="py-2 px-4 border">
+                        {% if object.carrierbroker %}
+                          <a href="{{ object.carrierbroker.url }}" class="underline decoration-sky-500/30 text-blue-800">{{ object.carrierbroker }}</a>
+                        {% else %}
+                          No file available
+                        {% endif %}
+                      </td>
+                    </tr>
+                  
+                    <!-- Manual Carrier Broker -->
+                    <tr>
+                      <td class="py-2 px-4 border">Manual Carrier Broker</td>
+                      <td class="py-2 px-4 border">
+                        {% if object.manualcarrierbroker %}
+                          <a href="{{ object.manualcarrierbroker.url }}" class="underline decoration-sky-500/30 text-blue-800">{{ object.manualcarrierbroker }}</a>
+                        {% else %}
+                          No file available
+                        {% endif %}
+                      </td>
+                    </tr>
+
+
+                    <tr>
+                      <td class="py-2 px-4 border">Pricing Proposal Files</td>
+                      <td class="py-2 px-4 border">
+                        <ul>
+                          {% for proposal_file in object.pricing_proposals.all %}
+                            <li>
+                              <a href="{{ proposal_file.file.url }}" class="underline decoration-sky-500/30 text-blue-800">{{ proposal_file.file }}</a>
+                            </li>
+                          {% empty %}
+                            No proposal files available
+                          {% endfor %}
+                        </ul>
+                      </td>
+                    </tr>
+                  
+                    <!-- Pricing Agreement Files -->
+                    <tr>
+                      <td class="py-2 px-4 border">Pricing Agreement Files</td>
+                      <td class="py-2 px-4 border">
+                        <ul>
+                          {% for agreement_file in object.pricing_agreements.all %}
+                            <li>
+                              <a href="{{ agreement_file.file.url }}" class="underline decoration-sky-500/30 text-blue-800">{{ agreement_file.file }}</a>
+                            </li>
+                          {% empty %}
+                            No agreement files available
+                          {% endfor %}
+                        </ul>
+                      </td>
+                    </tr>
+                  
+                    <!-- Contract Signed -->
+                    <tr>
+                      <td class="py-2 px-4 border">Contract Signed</td>
+                      <td class="py-2 px-4 border">{{ object.contractsigned }}</td>
+                    </tr>
+                                    
+                    <!-- Notes -->
+                    <tr>
+                      <td class="py-2 px-4 border">Notes</td>
+                      <td class="py-2 px-4 border">{{ object.notes }}</td>
+                    </tr>
+
+
+                  
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+  
+      
+
+
+{% endblock %}
+    
+
