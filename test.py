@@ -5,7 +5,7 @@ from pprint import pprint
 
 
 default_configuration = signrequest_client.Configuration()
-# default_configuration.api_key['Authorization'] = '0357fae09db61bc8fcfd1808faf4b4b3e7ab170e'
+default_configuration.api_key['Authorization'] = '0357fae09db61bc8fcfd1808faf4b4b3e7ab170e'
 default_configuration.api_key_prefix['Authorization'] = 'Token'
 signrequest_client.Configuration.set_default(default_configuration)
 

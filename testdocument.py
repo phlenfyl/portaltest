@@ -3,7 +3,7 @@ import requests
 import requests
 
 url = 'https://esignatures.io/api/contracts'
-# token = 'd6f3eb1f-4596-4c3f-8141-606fada04c93'
+token = 'd6f3eb1f-4596-4c3f-8141-606fada04c93'
 headers = {'Content-Type': 'application/json'}
 data = {
     'template_id': 'dfed7052-b1c0-45a8-a880-e5acd45e4875',

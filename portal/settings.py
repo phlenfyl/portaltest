@@ -183,7 +183,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'main.newuser'
 
-# GOOGLE_API_KEY ='AIzaSyDdBw8gcBfkG0BFu5WMPwqH7lkLryyEHZI'
+GOOGLE_API_KEY ='AIzaSyDdBw8gcBfkG0BFu5WMPwqH7lkLryyEHZI'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 
